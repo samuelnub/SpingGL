@@ -3,8 +3,8 @@
 #define GAME_GAME_H
 
 #include <SDL2/SDL.h>
-
 #include <game/states.h>
+#include <game/input.h>
 
 class Game
 {
@@ -19,7 +19,7 @@ public:
 
 	//lord forgive me for my public member variables
 	States states;
-
+	Input input;
 protected:
 	
 
