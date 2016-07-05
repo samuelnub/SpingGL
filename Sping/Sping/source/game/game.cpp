@@ -1,0 +1,48 @@
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>         /// remove the "3" for OpenGL versions < 3
+#include <OpenGL/gl3ext.h>      /// ditto
+#else 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#endif
+
+#include <game/game.h>
+
+Game::Game(SDL_Window *window)
+{
+	this->_window = window;
+
+	//setup other things, gui, fonts, etc.
+	states.setup();
+
+
+	this->loop();
+}
+
+Game::~Game()
+{
+}
+
+void Game::loop()
+{
+	SDL_Event event;
+	while (true)
+	{
+		if (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				break;
+			}
+			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				break;
+			}
+		}
+
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		SDL_GL_SwapWindow(this->_window);
+	}
+}
