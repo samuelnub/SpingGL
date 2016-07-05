@@ -1,0 +1,8 @@
+5 July 2016
+	initializer makes window and sets current context to window
+	passes this onto game class
+	game class will contain all objects that have to exist and need to communicate to each other
+	for now, theres a states class instance within this, each instance holds a map of all current states, so one should exist in the game class only
+	
+TODO:
+	input class
