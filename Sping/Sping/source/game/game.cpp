@@ -14,7 +14,7 @@ Game::Game(SDL_Window *window)
 
 	//setup other things, gui, fonts, etc.
 	states.setup();
-
+	input.setup();
 
 	this->loop();
 }
@@ -28,17 +28,7 @@ void Game::loop()
 	SDL_Event event;
 	while (true)
 	{
-		if (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				break;
-			}
-			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
-			{
-				break;
-			}
-		}
+		input.update(SDL_GetTicks());
 
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
