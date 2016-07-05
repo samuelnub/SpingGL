@@ -168,7 +168,7 @@ void Input::mouseScrollEvent(size_t & index)
 
 void Input::mouseButtonDownEvent(size_t & index)
 {
-	std::cout << "Pressed mouse button " << this->_frameEvents[index].button.button << "!\n";
+	std::cout << "Pressed mouse button " << this->_frameEvents[index].button.button << " at " << this->getCursorX() << ", " << this->getCursorY() << "!\n";
 	this->_pressedMouseButtons[this->_frameEvents[index].button.button] = true;
 }
 
