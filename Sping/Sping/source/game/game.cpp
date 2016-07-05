@@ -29,6 +29,11 @@ void Game::loop()
 	{
 		input.update(SDL_GetTicks());
 
+		if (this->states.get("nevada") == -1)
+		{
+			this->states.add("nevada", true);
+		}
+
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
