@@ -16,7 +16,7 @@ public:
 	~States();
 
 	void setup();
-	bool get(const std::string &key);
+	int get(const std::string &key);
 	void set(const std::string &key, const bool state); //does not add if it doesnt exist
 	void toggle(const std::string &key);
 	void add(const std::string &key, const bool state); //if what you wanna add already exists, itll just set the state you give it
