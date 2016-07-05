@@ -25,7 +25,6 @@ Game::~Game()
 
 void Game::loop()
 {
-	SDL_Event event;
 	while (true)
 	{
 		input.update(SDL_GetTicks());
