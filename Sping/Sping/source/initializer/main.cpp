@@ -1,5 +1,5 @@
 #include <iostream>
-#include <initializer/windower.h>
+#include <game/game.h>
 
 //SDL2 has this lil' hitch where it #defines main in its SDL_main.h, so you need to provide the argc and args[] flags in your actual main function to override it, thanks, SDL, ya bitch
 int main(int argc, char *args[])
@@ -8,7 +8,7 @@ int main(int argc, char *args[])
 
 	try
 	{
-		Window window;
+		Game game;
 	}
 	catch (const char *error)
 	{
