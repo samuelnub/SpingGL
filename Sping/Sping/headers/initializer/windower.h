@@ -4,19 +4,40 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <string>
 
 class Window
 {
 private:
-	SDL_Window *_window;
 	SDL_GLContext _context;
+
+	int _glMajor;
+	int _glMinor;
+
+	int _depthBits;
+	int _stencilBits;
+	bool _doublebuffer;
+	int _multisamples;
+
+	const char *_name;
+
+	int _width;
+	int _height;
+	bool _fullscreen;
+
+	int _failedAttempts;
+
+	SDL_DisplayMode _displayMode;
 
 public:
 	Window();
 	~Window(); //deletes sdl window context and cleans up some shizmo
 
-protected:
+	void setup();
 
+	SDL_Window *_window;
+protected:
+	void loadXML(const char *filePath);
 
 };
 
