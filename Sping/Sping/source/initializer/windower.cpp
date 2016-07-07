@@ -7,23 +7,58 @@
 #endif
 
 #include <initializer/windower.h>
-#include <globals/globals.h>
-#include <game/game.h>
+#include <tinyxml2/tinyxml2.h>
+#include <iostream>
+#include <globals/xmldefaults.h>
 
 Window::Window()
 {
+}
+
+Window::~Window()
+{
+	SDL_GL_DeleteContext(this->_context);
+	SDL_Quit();
+}
+
+void Window::setup()
+{
+	this->_failedAttempts = 0;
+	this->loadXML("res/settings/settings.xml");
+
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, Windowsettings::glMajor);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, Windowsettings::glMinor);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, Windowsettings::stencilBits);
-	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, Windowsettings::multisamples);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, Windowsettings::doublebuffer);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, this->_glMajor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, this->_glMinor);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, this->_stencilBits);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, this->_multisamples);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, this->_doublebuffer);
 
-	this->_window = SDL_CreateWindow(Windowsettings::name, 0, 0, Windowsettings::width, Windowsettings::height, 
-		SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP
-		);
+	if (SDL_GetDesktopDisplayMode(0, &this->_displayMode) != 0)
+	{
+		std::cout << "Couldn't get desktop display mode for some reason!\n" << SDL_GetError() << "\n";
+		exit(EXIT_FAILURE);
+	}
+
+	if (this->_fullscreen == 1)
+	{
+		this->_window = SDL_CreateWindow(this->_name, 0, 0, this->_displayMode.w, this->_displayMode.h,
+			SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN
+			);
+	}
+	else
+	{
+		this->_window = SDL_CreateWindow(this->_name, 100, 100, this->_width, this->_height,
+			SDL_WINDOW_OPENGL
+			);
+	}
+
+	if (this->_window == NULL)
+	{
+		throw "Couldn't create SDL OpenGL window!\n";
+		exit(EXIT_FAILURE);
+	}
 
 	/*
 	SDL_WINDOW_FULLSCREEN
@@ -56,12 +91,46 @@ Window::Window()
 	{
 		throw "Couldn't init GLEW!\n";
 	}
-
-	Game game(this->_window);
 }
 
-Window::~Window()
+void Window::loadXML(const char * filePath)
 {
-	SDL_GL_DeleteContext(this->_context);
-	SDL_Quit();
+	tinyxml2::XMLDocument xmlDoc;
+	tinyxml2::XMLError xmlErr = xmlDoc.LoadFile(filePath);
+	if (xmlErr != tinyxml2::XML_SUCCESS)
+	{
+		this->_failedAttempts++;
+		std::cout << "Couldn't read XML file for window settings! Making defaults...\n";
+
+
+		xmlDoc.Parse(XMLDefaults::defaultSettings);
+		xmlDoc.SaveFile(filePath);
+
+		if (this->_failedAttempts < 69)
+			this->loadXML(filePath);
+		else
+			exit(EXIT_FAILURE);
+	}
+
+	//TODO: actual interpretation of settings.xml
+	tinyxml2::XMLElement *rootNode = xmlDoc.FirstChildElement("root");
+	rootNode = rootNode->FirstChildElement("WindowSettings");
+	rootNode->FirstChildElement("glMajor")->QueryIntText(&this->_glMajor);
+	rootNode->FirstChildElement("glMinor")->QueryIntText(&this->_glMinor);
+
+	rootNode->FirstChildElement("depthBits")->QueryIntText(&this->_depthBits);
+	rootNode->FirstChildElement("stencilBits")->QueryIntText(&this->_stencilBits);
+	rootNode->FirstChildElement("doubleBuffer")->QueryBoolText(&this->_doublebuffer);
+	rootNode->FirstChildElement("multisamples")->QueryIntText(&this->_multisamples);
+	tinyxml2::XMLText *textNode = rootNode->FirstChildElement("glMajor")->FirstChild()->ToText();
+	this->_name = textNode->Value();
+
+	rootNode->FirstChildElement("width")->QueryIntText(&this->_width);
+	rootNode->FirstChildElement("height")->QueryIntText(&this->_height);
+	rootNode->FirstChildElement("fullscreen")->QueryBoolText(&this->_fullscreen);
+	if (rootNode == nullptr)
+	{
+		std::cout << "Couldn't read a single element from XML file for settings! Try deleting the file and running this again to generate a new settings.xml file!\n";
+		exit(EXIT_FAILURE);
+	}
 }
