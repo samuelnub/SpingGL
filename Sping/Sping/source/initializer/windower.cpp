@@ -28,6 +28,8 @@ void Window::setup()
 
 	SDL_Init(SDL_INIT_VIDEO);
 
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, this->_glMajor);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, this->_glMinor);
@@ -41,18 +43,21 @@ void Window::setup()
 		exit(EXIT_FAILURE);
 	}
 
+	const char *tempName = this->_name.c_str();
+
 	if (this->_fullscreen == 1)
 	{
-		this->_window = SDL_CreateWindow(this->_name, 0, 0, this->_displayMode.w, this->_displayMode.h,
+		this->_window = SDL_CreateWindow(tempName, 0, 0, this->_displayMode.w, this->_displayMode.h,
 			SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN
 			);
 	}
 	else
 	{
-		this->_window = SDL_CreateWindow(this->_name, 100, 100, this->_width, this->_height,
+		this->_window = SDL_CreateWindow(tempName, 100, 100, this->_width, this->_height,
 			SDL_WINDOW_OPENGL
 			);
 	}
+	
 
 	if (this->_window == NULL)
 	{
@@ -91,6 +96,8 @@ void Window::setup()
 	{
 		throw "Couldn't init GLEW!\n";
 	}
+
+	glViewport(0, 0, this->_width, this->_height);
 }
 
 void Window::loadXML(const char * filePath)
@@ -122,15 +129,15 @@ void Window::loadXML(const char * filePath)
 	rootNode->FirstChildElement("stencilBits")->QueryIntText(&this->_stencilBits);
 	rootNode->FirstChildElement("doubleBuffer")->QueryBoolText(&this->_doublebuffer);
 	rootNode->FirstChildElement("multisamples")->QueryIntText(&this->_multisamples);
-	tinyxml2::XMLText *textNode = rootNode->FirstChildElement("glMajor")->FirstChild()->ToText();
-	this->_name = textNode->Value();
+	this->_name = rootNode->FirstChildElement("title")->FirstChild()->ToText()->Value();
+	std::cout << rootNode->FirstChildElement("title")->FirstChild()->ToText()->Value() << "\n";
 
 	rootNode->FirstChildElement("width")->QueryIntText(&this->_width);
 	rootNode->FirstChildElement("height")->QueryIntText(&this->_height);
 	rootNode->FirstChildElement("fullscreen")->QueryBoolText(&this->_fullscreen);
 	if (rootNode == nullptr)
 	{
-		std::cout << "Couldn't read a single element from XML file for settings! Try deleting the file and running this again to generate a new settings.xml file!\n";
+		std::cout << "Couldn't read a single element from XML file for settings! Try deleting the file at " << filePath << " and run this again to generate a new settings.xml file!\n";
 		exit(EXIT_FAILURE);
 	}
 }
