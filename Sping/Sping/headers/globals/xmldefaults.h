@@ -6,6 +6,7 @@ namespace XMLDefaults
 {
 	const char *defaultSettings =
 	{
+		"<?xml version=\"1.0\"?>"
 		"<root>"
 		"	<WindowSettings>"
 		"		<glMajor>4</glMajor>"
@@ -15,7 +16,7 @@ namespace XMLDefaults
 		"		<stencilBits>8</stencilBits>"
 		"		<doubleBuffer>1</doubleBuffer>"
 		"		<multisamples>8</multisamples>"
-		"		<name>Sping!</name>"
+		"		<title>Sping!</title>"
 		"		"
 		"		<width>1280</width>"
 		"		<height>720</height>"
