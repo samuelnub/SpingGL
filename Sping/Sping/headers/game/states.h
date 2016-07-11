@@ -17,10 +17,14 @@ public:
 
 	void setup();
 	int get(const std::string &key);
-	void set(const std::string &key, const bool state); //does not add if it doesnt exist
+	//does set if it doesnt exist
+	void set(const std::string &key, const bool state); 
+	//toggles existing state
 	void toggle(const std::string &key);
-	void add(const std::string &key, const bool state); //if what you wanna add already exists, itll just set the state you give it
-	void list(); //in case you need to know
+	//if what you wanna add already exists, itll just set the state you give it
+	void add(const std::string &key, const bool state); 
+	//in case you need to know
+	void list(); 
 
 protected:
 
