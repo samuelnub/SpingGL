@@ -21,7 +21,7 @@ Game::Game()
 	_templol[testText].push_back(testText);
 	Renderable testoRendo;
 	glm::mat4 testMat;
-	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.1f, 0.0f));
+	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.0f, 0.0f));
 	testoRendo.create(69, testMat, &this->meshes, &this->shaders, &this->textures, _shadeTest, _templol);
 	scene.stage(&testoRendo);
 
