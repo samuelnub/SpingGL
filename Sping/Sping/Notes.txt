@@ -7,8 +7,37 @@
 
 6 July 2016
 	going to use xml files to store general data, with tinyxml2 for parsing
+
+7 July 2016
+	window now made in game object, game object made by main, so game is the main holder for these objects now
+	windower reads xml file for settings, creates defaults based on xmldefaults.h if it doesnt exist
+	note to self: font loading is some pretty tedious shiz without another library
+	todo: stop trying to use font stash, try to use ftgl, get primitive shaders up, and get freetype2's libraries and includes cause ftgl needs it to build
+
+8 July 2016
+	text rendering is still hard :(((
+	working on scene graph
+	outline of scene component management, meshes, textures and shaders will be loaded once, and any renderable objects will simply provide which mesh, texture and shader they'd want to use to express themselves, with the Renderable object simply containing its world transform, and you can inherit it to add your own attributes eg uniforms to send.
+
+9 July 2016
+	textures, meshes and shaders handled in their own managers, and renderables will (TODO) simply refer to what resources they wish to use, only supplying their mat4 model transform as well as other aspects you can inherit off and implement
+	to do: Renderables manager (or ActorManager) should have a map (if i can, implement a Slot Map instead), and a "counter" to keep track of instances, as an ID tag, instead of giving retarded string names as keys
+	inline functions caused unresolved external symbol errors, wow
+
+10 July 2016
+	sorta sorted out the issue of resources, in an inefficient way for now, sorry me, i know, im an idiot
+	only pointers to shaders are staged, with each shader having a paired vector of pointers to renderables to which to shade with
+
+11 July 2016
+	almost there, just need to properly set up mvp matrices
+	for some reason, turning off doublebuffering causes memory access violotation for making a vao lol
+	RENDERED SPONGEGAR SUCC
+	ADVAncEMENT IN TECHNoLOgY
+
 	
 TODO:
 	refine input class, sort out how to handle triggering the appropriate stuff, aka move player left etc
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
 	with bitmap fonts, make an xml loader
+	get soil up and running
+	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results
