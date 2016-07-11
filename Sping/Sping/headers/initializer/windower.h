@@ -19,7 +19,7 @@ private:
 	bool _doublebuffer;
 	int _multisamples;
 
-	const char *_name;
+	std::string _name;
 
 	int _width;
 	int _height;
