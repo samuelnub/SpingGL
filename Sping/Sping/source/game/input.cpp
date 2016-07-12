@@ -1,4 +1,5 @@
 #include <game/input.h>
+#include <game/game.h>
 #include <iostream>
 
 Input::Input()
@@ -9,8 +10,10 @@ Input::~Input()
 {
 }
 
-void Input::setup()
+void Input::setup(Game *game)
 {
+	this->_gamePtr = game;
+
 	this->_deltaTime = 0.0f;
 	this->_lastFrameTime = 0.0f;
 
@@ -66,12 +69,12 @@ bool Input::isKeyHeld(SDL_Scancode & key)
 	return this->_heldKeys[key];
 }
 
-bool Input::wasMouseButtonPressed(int & button)
+bool Input::wasMouseButtonPressed(int button)
 {
 	return this->_pressedMouseButtons[button];
 }
 
-bool Input::wasMouseButtonReleased(int & button)
+bool Input::wasMouseButtonReleased(int button)
 {
 	return this->_releasedMouseButtons[button];
 }
@@ -114,10 +117,12 @@ void Input::process()
 		{
 		case SDL_QUIT:
 			SDL_Quit();
-			return;
+			exit(EXIT_SUCCESS);
 			break;
 		case SDL_KEYDOWN:
-			if (this->_event.key.repeat == false)
+			if (this->_frameEvents.at(i).key.repeat == true)
+				this->keyHeldEvent(i);
+			else if (this->_frameEvents.at(i).key.repeat == false)
 				this->keyDownEvent(i);
 			break;
 		case SDL_KEYUP:
@@ -144,12 +149,24 @@ void Input::keyDownEvent(size_t &index)
 	std::cout << "Pressed key " << this->_frameEvents[index].key.keysym.scancode << "!\n";
 	this->_pressedKeys[this->_frameEvents[index].key.keysym.scancode] = true;
 	this->_heldKeys[this->_frameEvents[index].key.keysym.scancode] = true;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseKeyDown();
+}
+
+void Input::keyHeldEvent(size_t & index)
+{
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseKeyHeld();
 }
 
 void Input::keyUpEvent(size_t &index)
 {
 	this->_releasedKeys[this->_frameEvents[index].key.keysym.scancode] = true;
 	this->_heldKeys[this->_frameEvents[index].key.keysym.scancode] = false;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseKeyUp();
 }
 
 void Input::mouseMotionEvent(size_t &index)
@@ -158,21 +175,33 @@ void Input::mouseMotionEvent(size_t &index)
 	this->_cursorY = this->_frameEvents[index].motion.y;
 	this->_cursorMovedX = this->_frameEvents[index].motion.xrel;
 	this->_cursorMovedY = this->_frameEvents[index].motion.yrel;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseMouseMotion();
 }
 
 void Input::mouseScrollEvent(size_t & index)
 {
 	this->_scrolledX = this->_frameEvents[index].wheel.x;
 	this->_scrolledY = this->_frameEvents[index].wheel.y;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseMouseScroll();
 }
 
 void Input::mouseButtonDownEvent(size_t & index)
 {
 	std::cout << "Pressed mouse button " << this->_frameEvents[index].button.button << " at " << this->getCursorX() << ", " << this->getCursorY() << "!\n";
 	this->_pressedMouseButtons[this->_frameEvents[index].button.button] = true;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseMouseButtonDown();
 }
 
 void Input::mouseButtonUpEvent(size_t & index)
 {
 	this->_releasedMouseButtons[this->_frameEvents[index].button.button] = true;
+
+	//===========impulse commands when this event occurs==========
+	this->_gamePtr->commands.impulseMouseButtonUp();
 }
