@@ -1,4 +1,5 @@
 #include <render/scene.h>
+#include <game/game.h>
 #include <iostream>
 #include <render/renderable.h>
 #include <algorithm>
@@ -18,13 +19,12 @@ Scene::~Scene()
 {
 }
 
-int Scene::setup(Meshes *meshes, Shaders *shaders, Textures *textures)
+int Scene::setup(Game *game)
 {
 	this->_stagedRenderables.reserve(100000);
 
-	this->_meshes = meshes;
-	this->_shaders = shaders;
-	this->_textures = textures;
+	this->_gamePtr = game;
+
 	std::cout << "Set up the scene object!\n";
 	return 0;
 }
@@ -80,6 +80,11 @@ int Scene::unstage(Renderable * renderable)
 	return 0;
 }
 
+bool Scene::isStaged(Renderable *renderable)
+{
+	return std::find(this->_stagedRenderables.begin(), this->_stagedRenderables.end(), renderable) != this->_stagedRenderables.end();
+}
+
 //an important function, i think, dunno, kinda draws everything to your screen
 void Scene::draw()
 {
@@ -94,11 +99,14 @@ void Scene::draw()
 	while (iter != this->_stagedShaders.end())
 	{
 		//use shader, send shader-specific uniforms
-		this->_shaders->utilise(iter->first);
+		this->_gamePtr->shaders.utilise(iter->first);
 
 		//TODO: sending camera matrices should go here (V and P)
-		glm::mat4 viewMat = glm::lookAt(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));
-		glm::mat4 projMat = glm::perspective(45.0f, 1280.0f / 720.0f, 0.1f, 1000.0f);
+		glm::mat4 viewMat;
+		glm::mat4 projMat;
+		this->_gamePtr->eyes.update();
+		this->_gamePtr->eyes.getMatrices(viewMat, projMat);
+
 		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "view"), 1, GL_FALSE, glm::value_ptr(viewMat));
 		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "projection"), 1, GL_FALSE, glm::value_ptr(projMat));
 
@@ -148,7 +156,7 @@ void Scene::draw()
 				}
 
 				glBindVertexArray(element.first->vaoID);
-				glDrawElements(GL_TRIANGLES, this->_meshes->getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, this->_gamePtr->meshes.getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
 				glBindVertexArray(0);
 
 				for (unsigned int j = 0; j < element.second.size(); j++)
@@ -165,6 +173,7 @@ void Scene::draw()
 
 }
 
+//TODO: implement flushing
 void Scene::flush()
 {
 
