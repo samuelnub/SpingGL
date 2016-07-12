@@ -7,19 +7,22 @@ Game::Game()
 	//setup other things, gui, fonts, etc.
 	window.setup();
 	states.setup();
-	input.setup();
+	input.setup(this);
+	commands.setup(this);
 
 	meshes.setup();
 	shaders.setup();
 	textures.setup();
 
-	scene.setup(&this->meshes, &this->shaders, &this->textures);
+	eyes.setup();
+	scene.setup(this);
+
 	std::string testText = "test";
 	std::vector<std::string> _shadeTest;
 	_shadeTest.push_back(testText);
 	std::map<std::string, std::vector<std::string>> _templol;
 	_templol[testText].push_back(testText);
-	Renderable testoRendo;
+
 	glm::mat4 testMat;
 	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.0f, 0.0f));
 	testoRendo.create(69, testMat, &this->meshes, &this->shaders, &this->textures, _shadeTest, _templol);
@@ -41,6 +44,8 @@ void Game::loop()
 	{
 		this->states.add("nevada", true);
 	}
+
+	testoRendo.update(glm::rotate(*testoRendo.getTrans(), glm::radians(0.05f * this->input.getDelta()), glm::vec3(0.5f, 0.5f, 0.0f)));
 
 	scene.draw();
 
