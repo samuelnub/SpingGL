@@ -23,9 +23,7 @@ struct Mesh;
 struct Shader;
 struct Texture;
 
-class Meshes;
-class Shaders;
-class Textures;
+class Game;
 
 //one instance of this should exist in game
 class Scene
@@ -35,9 +33,7 @@ private:
 	//ActorManager *_actors;
 	//std::vector<Renderables> _stagedRenderables;
 
-	Meshes *_meshes;
-	Shaders *_shaders;
-	Textures *_textures;
+	Game *_gamePtr;
 
 	std::map<Shader *, std::vector<Renderable *>> _stagedShaders;
 
@@ -45,11 +41,13 @@ public:
 	Scene();
 	~Scene();
 
-	int setup(Meshes *meshes, Shaders *shaders, Textures *textures);
+	int setup(Game *game);
 
 	int stage(Renderable *renderable);
 
-	int unstage(Renderable *renderable); //try swap and pop
+	int unstage(Renderable *renderable);
+
+	bool isStaged(Renderable *renderable);
 
 	void draw();
 
