@@ -20,6 +20,8 @@ Scene::~Scene()
 
 int Scene::setup(Meshes *meshes, Shaders *shaders, Textures *textures)
 {
+	this->_stagedRenderables.reserve(100000);
+
 	this->_meshes = meshes;
 	this->_shaders = shaders;
 	this->_textures = textures;
@@ -65,14 +67,15 @@ int Scene::unstage(Renderable * renderable)
 	iter = this->_stagedShaders.begin();
 	while (iter != this->_stagedShaders.end())
 	{
-		iter->second.erase(std::remove(this->_stagedRenderables.begin(), this->_stagedRenderables.end(), renderable), this->_stagedRenderables.end());
+		/*if (std::find(iter->second.begin(), iter->second.end(), renderable) == iter->second.end())
+		{
+			continue;
+		}*/
+		iter->second.erase(std::remove(iter->second.begin(), iter->second.end(), renderable), iter->second.end());
+		iter++;
 	}
 
-	//TODO: read off settings file for this limit
-	if (this->_stagedRenderables.size() > 10000000)
-	{
-		this->flush();
-	}
+	std::cout << "Unstaged renderable with address " << renderable << "!\n";
 
 	return 0;
 }
@@ -94,7 +97,7 @@ void Scene::draw()
 		this->_shaders->utilise(iter->first);
 
 		//TODO: sending camera matrices should go here (V and P)
-		glm::mat4 viewMat = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));
+		glm::mat4 viewMat = glm::lookAt(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));
 		glm::mat4 projMat = glm::perspective(45.0f, 1280.0f / 720.0f, 0.1f, 1000.0f);
 		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "view"), 1, GL_FALSE, glm::value_ptr(viewMat));
 		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "projection"), 1, GL_FALSE, glm::value_ptr(projMat));
