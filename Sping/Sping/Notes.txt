@@ -34,6 +34,11 @@
 	RENDERED SPONGEGAR SUCC
 	ADVAncEMENT IN TECHNoLOgY
 
+12 July 2016
+	instancing could be done by simply specifying more than one model matrix in the renderable instance
+	quaternion camera? ehHHHHHHHHH, gonna redo, really messed up right now
+	command class that sends all functions needed when events happen, messy, but better than having input commands hidden in every nook and cranny of this project
+
 	
 TODO:
 	refine input class, sort out how to handle triggering the appropriate stuff, aka move player left etc
@@ -41,3 +46,6 @@ TODO:
 	with bitmap fonts, make an xml loader
 	get soil up and running
 	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results
+	camera class, quaternion based preferably
+	an example of an actor type: model load actor, specifies model filepath on creation and uses assimp
+	try a logarithmic depth buffer for large scales
