@@ -6,10 +6,14 @@
 #include <vector>
 #include <array>
 
+class Game;
+
 //input must be processed in main loop before other classes request "was this pressed?"
 class Input
 {
 private:
+	Game *_gamePtr;
+
 	SDL_Event _event;
 
 	std::vector<SDL_Event> _frameEvents;
@@ -36,7 +40,7 @@ public:
 	Input();
 	~Input();
 
-	void setup();
+	void setup(Game *game);
 
 	void update(const float &curFrameTime); //refresh all key maps every frame and get delta time, if poll event returned true, process the event
 
@@ -46,8 +50,8 @@ public:
 	bool wasKeyReleased(SDL_Scancode &key);
 	bool isKeyHeld(SDL_Scancode &key);
 
-	bool wasMouseButtonPressed(int &button);
-	bool wasMouseButtonReleased(int &button);
+	bool wasMouseButtonPressed(int button);
+	bool wasMouseButtonReleased(int button);
 
 	int getCursorX();
 	int getCursorY();
@@ -60,6 +64,7 @@ protected:
 	void process();
 
 	void keyDownEvent(size_t &index);
+	void keyHeldEvent(size_t &index);
 	void keyUpEvent(size_t &index);
 	void mouseMotionEvent(size_t &index);
 	void mouseScrollEvent(size_t &index);
