@@ -12,13 +12,17 @@
 
 #include <game/states.h>
 #include <game/input.h>
+#include <game/commands.h>
 #include <initializer/windower.h>
 
 #include <tools/meshes.h>
 #include <tools/shaders.h>
 #include <tools/textures.h>
 
+#include <render/cameras/eyes.h>
 #include <render/scene.h>
+//TODO: get rid lol
+#include <render/renderable.h>
 
 class Game
 {
@@ -34,12 +38,16 @@ public:
 	Window window;
 	States states;
 	Input input;
+	Commands commands;
 
 	Meshes meshes;
 	Shaders shaders;
 	Textures textures;
 
+	Eyes eyes;
 	Scene scene;
+	//TODO: temp test lol
+	Renderable testoRendo;
 
 protected:
 	
