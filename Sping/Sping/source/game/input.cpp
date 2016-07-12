@@ -14,6 +14,13 @@ void Input::setup(Game *game)
 {
 	this->_gamePtr = game;
 
+	std::fill(this->_pressedKeys.begin(), this->_pressedKeys.end(), false);
+	std::fill(this->_heldKeys.begin(), this->_heldKeys.end(), false);
+	std::fill(this->_releasedKeys.begin(), this->_releasedKeys.end(), false);
+
+	std::fill(this->_pressedMouseButtons.begin(), this->_pressedMouseButtons.end(), false);
+	std::fill(this->_releasedMouseButtons.begin(), this->_releasedMouseButtons.end(), false);
+
 	this->_deltaTime = 0.0f;
 	this->_lastFrameTime = 0.0f;
 
@@ -27,7 +34,6 @@ void Input::update(const float &curFrameTime)
 
 	//resets key events every frame, held keys are kept though, until further notice
 	std::fill(this->_pressedKeys.begin(), this->_pressedKeys.end(), false);
-	std::fill(this->_heldKeys.begin(), this->_heldKeys.end(), false);
 	std::fill(this->_releasedKeys.begin(), this->_releasedKeys.end(), false);
 
 	std::fill(this->_pressedMouseButtons.begin(), this->_pressedMouseButtons.end(), false);
