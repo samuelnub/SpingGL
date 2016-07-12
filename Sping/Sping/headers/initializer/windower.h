@@ -28,6 +28,10 @@ private:
 	int _failedAttempts;
 
 	SDL_DisplayMode _displayMode;
+	SDL_Renderer *_gottenRenderer;
+
+	int _createdWidth;
+	int _createdHeight;
 
 public:
 	Window();
