@@ -24,7 +24,7 @@ Window::~Window()
 void Window::setup()
 {
 	this->_failedAttempts = 0;
-	this->loadXML("res/settings/settings.xml");
+	this->loadXML("res/settings/windowsettings.xml");
 
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -97,7 +97,10 @@ void Window::setup()
 		throw "Couldn't init GLEW!\n";
 	}
 
-	glViewport(0, 0, this->_width, this->_height);
+	this->_gottenRenderer = SDL_GetRenderer(this->_window);
+	SDL_GetRendererOutputSize(this->_gottenRenderer, &this->_createdWidth, &this->_createdHeight);
+
+	glViewport(0, 0, this->_createdWidth, this->_createdHeight);
 }
 
 void Window::loadXML(const char * filePath)
@@ -110,7 +113,7 @@ void Window::loadXML(const char * filePath)
 		std::cout << "Couldn't read XML file for window settings! Making defaults...\n";
 
 
-		xmlDoc.Parse(XMLDefaults::defaultSettings);
+		xmlDoc.Parse(XMLDefaults::windowSettings);
 		xmlDoc.SaveFile(filePath);
 
 		if (this->_failedAttempts < 69)
@@ -137,7 +140,7 @@ void Window::loadXML(const char * filePath)
 	rootNode->FirstChildElement("fullscreen")->QueryBoolText(&this->_fullscreen);
 	if (rootNode == nullptr)
 	{
-		std::cout << "Couldn't read a single element from XML file for settings! Try deleting the file at " << filePath << " and run this again to generate a new settings.xml file!\n";
+		std::cout << "Couldn't read a single element from XML file for settings! Try deleting the file at " << filePath << " and run this again to generate a new settings file!\n";
 		exit(EXIT_FAILURE);
 	}
 }
