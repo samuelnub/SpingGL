@@ -17,7 +17,7 @@ public:
 
 	void setup();
 	int get(const std::string &key);
-	//does set if it doesnt exist
+	//does not set if it doesnt exist
 	void set(const std::string &key, const bool state); 
 	//toggles existing state
 	void toggle(const std::string &key);
