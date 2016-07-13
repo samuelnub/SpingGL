@@ -95,45 +95,85 @@ void Commands::impulseKeyDown()
 		}
 	}
 	
-}
 
-void Commands::impulseKeyHeld()
-{
-	//ingame controls
+	//TODO: still for testing lol
 	if (this->_gamePtr->states.get("in_game") == 1)
 	{
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Forward))
 		{
-			this->_gamePtr->eyes.move(FORWARD);
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.0f, -0.01f * this->_gamePtr->input.getDelta()));
 		}
-
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Backward))
 		{
-			this->_gamePtr->eyes.move(BACKWARD);
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.0f, 0.01f * this->_gamePtr->input.getDelta()));
 		}
-
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::StrafeLeft))
 		{
-			this->_gamePtr->eyes.move(STRAFE_LEFT);
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.01f * this->_gamePtr->input.getDelta(), 0.0f, 0.0f));
 		}
-
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::StrafeRight))
 		{
-			this->_gamePtr->eyes.move(STRAFE_RIGHT);
+			this->_gamePtr->camera.translateLocal(glm::vec3(-0.01f * this->_gamePtr->input.getDelta(), 0.0f, 0.0f));
 		}
-
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Upward))
 		{
-			this->_gamePtr->eyes.move(UP);
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.01f * this->_gamePtr->input.getDelta(), 0.0f));
 		}
-
 		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Downward))
 		{
-			this->_gamePtr->eyes.move(DOWN);
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, -0.01f * this->_gamePtr->input.getDelta(), 0.0f));
 		}
-		//mouse controls below somewhere lol
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::RollLeft))
+		{
+			this->_gamePtr->camera.roll(-0.01f * this->_gamePtr->input.getDelta());
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::RollRight))
+		{
+			this->_gamePtr->camera.roll(0.01f * this->_gamePtr->input.getDelta());
+		}
+		std::cout << this->_gamePtr->camera.getPos().x << " " << this->_gamePtr->camera.getPos().y << " " << this->_gamePtr->camera.getPos().x << "\n";
 	}
+}
 
+void Commands::impulseKeyHeld()
+{
+	//TODO: still for testing lol
+	if (this->_gamePtr->states.get("in_game") == 1)
+	{
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Forward))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.0f, -0.01f * this->_gamePtr->input.getDelta()));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Backward))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.0f, 0.01f * this->_gamePtr->input.getDelta()));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::StrafeLeft))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.01f * this->_gamePtr->input.getDelta(), 0.0f, 0.0f));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::StrafeRight))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(-0.01f * this->_gamePtr->input.getDelta(), 0.0f, 0.0f));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Upward))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, 0.01f * this->_gamePtr->input.getDelta(), 0.0f));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::Downward))
+		{
+			this->_gamePtr->camera.translateLocal(glm::vec3(0.0f, -0.01f * this->_gamePtr->input.getDelta(), 0.0f));
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::RollLeft))
+		{
+			this->_gamePtr->camera.roll(-0.01f * this->_gamePtr->input.getDelta());
+		}
+		if (this->_gamePtr->input.isKeyHeld(Controls::Eyes::RollRight))
+		{
+			this->_gamePtr->camera.roll(0.01f * this->_gamePtr->input.getDelta());
+		}
+		std::cout << this->_gamePtr->camera.getPos().x << " " << this->_gamePtr->camera.getPos().y << " " << this->_gamePtr->camera.getPos().x << "\n";
+	}
 }
 
 void Commands::impulseKeyUp()
@@ -143,20 +183,6 @@ void Commands::impulseKeyUp()
 
 void Commands::impulseMouseMotion()
 {
-	//ingame controls
-	if (this->_gamePtr->states.get("in_game") == 1)
-	{
-		//if (this->_gamePtr->input.wasMouseButtonPressed(Controls::Eyes::LookMouseButton))
-		{
-			std::cout << "Moving eyes!\n";
-			this->_gamePtr->eyes.setPos(
-				this->_gamePtr->input.getCursorX(),
-				this->_gamePtr->input.getCursorY());
-			this->_gamePtr->eyes.move2D(
-				this->_gamePtr->input.getCursorX(),
-				this->_gamePtr->input.getCursorY());
-		}
-	}
 
 }
 
