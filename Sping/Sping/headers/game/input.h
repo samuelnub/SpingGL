@@ -44,21 +44,66 @@ public:
 
 	void update(const float &curFrameTime); //refresh all key maps every frame and get delta time, if poll event returned true, process the event
 
-	float getDelta();
+	inline float getDelta()
+	{
+		return this->_deltaTime;
+	}
 
-	bool wasKeyPressed(SDL_Scancode &key);
-	bool wasKeyReleased(SDL_Scancode &key);
-	bool isKeyHeld(SDL_Scancode &key);
+	inline bool wasKeyPressed(int key)
+	{
+		return this->_pressedKeys[key];
+	}
 
-	bool wasMouseButtonPressed(int button);
-	bool wasMouseButtonReleased(int button);
+	inline bool wasKeyReleased(int key)
+	{
+		return this->_releasedKeys[key];
+	}
 
-	int getCursorX();
-	int getCursorY();
-	int getCursorMovedX();
-	int getCursorMovedY();
-	int getScrollX();
-	int getScrollY();
+	inline bool isKeyHeld(int key)
+	{
+		return this->_heldKeys[key];
+	}
+
+	inline bool wasMouseButtonPressed(int button)
+	{
+		return this->_pressedMouseButtons[button];
+	}
+
+	inline bool wasMouseButtonReleased(int button)
+	{
+		return this->_releasedMouseButtons[button];
+	}
+
+	inline int getCursorX()
+	{
+		return this->_cursorX;
+	}
+
+	inline int getCursorY()
+	{
+		return this->_cursorY;
+	}
+
+	inline int getCursorMovedX()
+	{
+		return this->_cursorMovedX;
+	}
+
+	inline int getCursorMovedY()
+	{
+		return this->_cursorMovedY;
+	}
+
+	inline int getScrollX()
+	{
+		return this->_scrolledX;
+	}
+
+	inline int getScrollY()
+	{
+		return this->_scrolledY;
+	}
+
 
 protected:
 	void process();

@@ -52,68 +52,11 @@ void Input::update(const float &curFrameTime)
 		this->_frameEvents.push_back(this->_event);
 	}
 
+	//=================impulse commands every frame===============
+	this->_gamePtr->commands.impuseEveryFrame();
+
 	if(!this->_frameEvents.empty())
 		this->process();
-}
-
-float Input::getDelta()
-{
-	return this->_deltaTime;
-}
-
-bool Input::wasKeyPressed(SDL_Scancode & key)
-{
-	return this->_pressedKeys[key];
-}
-
-bool Input::wasKeyReleased(SDL_Scancode & key)
-{
-	return this->_releasedKeys[key];
-}
-
-bool Input::isKeyHeld(SDL_Scancode & key)
-{
-	return this->_heldKeys[key];
-}
-
-bool Input::wasMouseButtonPressed(int button)
-{
-	return this->_pressedMouseButtons[button];
-}
-
-bool Input::wasMouseButtonReleased(int button)
-{
-	return this->_releasedMouseButtons[button];
-}
-
-int Input::getCursorX()
-{
-	return this->_cursorX;
-}
-
-int Input::getCursorY()
-{
-	return this->_cursorY;
-}
-
-int Input::getCursorMovedX()
-{
-	return this->_cursorMovedX;
-}
-
-int Input::getCursorMovedY()
-{
-	return this->_cursorMovedY;
-}
-
-int Input::getScrollX()
-{
-	return this->_scrolledX;
-}
-
-int Input::getScrollY()
-{
-	return this->_scrolledY;
 }
 
 void Input::process()
