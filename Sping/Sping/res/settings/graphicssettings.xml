@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<root>
+    <GraphicsSettings>
+        <width>1280</width>
+        <height>720</height>
+        <fullscreen>0</fullscreen>
+        <glMajor>3</glMajor>
+        <glMinor>3</glMinor>
+        <depthBits>24</depthBits>
+        <stencilBits>8</stencilBits>
+        <doublebuffer>1</doublebuffer>
+        <multisamples>8</multisamples>
+        <name>Sping!</name>
+        <maxActors>1000000</maxActors>
+        <maxTexWidth>2048</maxTexWidth>
+        <maxTexHeight>2048</maxTexHeight>
+        <maxLod>7</maxLod>
+    </GraphicsSettings>
+</root>
