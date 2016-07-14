@@ -15,14 +15,15 @@
 #include <game/commands.h>
 #include <initializer/windower.h>
 
+#include <tools/settings.h>
 #include <tools/meshes.h>
 #include <tools/shaders.h>
 #include <tools/textures.h>
 
-#include <render/cameras/eyes.h>
 #include <render/scene.h>
 //TODO: get rid lol
 #include <render/renderable.h>
+#include <tools/camera.h>
 
 class Game
 {
@@ -35,6 +36,7 @@ public:
 	void loop();
 
 	//lord forgive me for my public member variables
+	Settings settings;
 	Window window;
 	States states;
 	Input input;
@@ -44,11 +46,11 @@ public:
 	Shaders shaders;
 	Textures textures;
 
-	Eyes eyes;
 	Scene scene;
 	//TODO: temp test lol
 	Renderable testoRendo;
-
+	Renderable testoRendoTwo;
+	Camera camera;
 protected:
 	
 
