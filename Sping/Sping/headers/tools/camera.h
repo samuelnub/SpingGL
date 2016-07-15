@@ -131,7 +131,7 @@ public:
 	{
 		if (this->_recalcProjMat)
 		{
-			this->_projMat = glm::perspective(this->_fovY, this->_aspect, this->_nearPlane, this->_farPlane);
+			this->_projMat = glm::perspective(glm::radians(this->_fovY), this->_aspect, this->_nearPlane, this->_farPlane);
 			this->_recalcProjMat = false;
 		}
 		return this->_projMat;
