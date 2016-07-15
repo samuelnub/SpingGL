@@ -44,6 +44,11 @@ int Settings::writeGraphicsSettings(const char *element, T value)
 
 	rootNode->FirstChildElement(element)->SetValue(value);
 
+	if (doc.SaveFile(filePath) != 0)
+	{
+		std::cout << "Couldn't properly write settings to " << filePath << "!\n";
+		return -1;
+	}
 	return 0;
 }
 
@@ -65,6 +70,11 @@ int Settings::writeUserSettings(std::string element, T value)
 
 	rootNode->FirstChildElement(element)->SetValue(value);
 
+	if (doc.SaveFile(filePath) != 0)
+	{
+		std::cout << "Couldn't properly write settings to " << filePath << "!\n";
+		return -1;
+	}
 	return 0;
 }
 
@@ -75,7 +85,11 @@ int Settings::loadFile(tinyxml2::XMLDocument &doc, const char *filePath, const c
 	{
 		std::cout << "Could not load the file requested at " << filePath << "! Attempting to create one...\a\n";
 		doc.Parse(defaults);
-		doc.SaveFile(filePath);
+		if (doc.SaveFile(filePath) != 0)
+		{
+			std::cout << "Couldn't create a default settings file at " << filePath << ", you're doomed\a\n";
+			return -2;
+		}
 		return -1;
 	}
 	return 0;
@@ -208,6 +222,9 @@ int Settings::loadUserSettings()
 	rootNode->FirstChildElement("rollRight")->QueryIntText(&this->userSettings.rollRight);
 	this->checkElement(rootNode, filePath);
 
+	rootNode->FirstChildElement("cursorLock")->QueryIntText(&this->userSettings.cursorLock);
+	this->checkElement(rootNode, filePath);
+
 	rootNode->FirstChildElement("orientationReset")->QueryIntText(&this->userSettings.orientationReset);
 	this->checkElement(rootNode, filePath);
 
@@ -227,6 +244,9 @@ int Settings::loadUserSettings()
 	this->checkElement(rootNode, filePath);
 
 	rootNode->FirstChildElement("fovReset")->QueryIntText(&this->userSettings.fovReset);
+	this->checkElement(rootNode, filePath);
+
+	rootNode->FirstChildElement("modifier")->QueryIntText(&this->userSettings.modifier);
 	this->checkElement(rootNode, filePath);
 
 	rootNode->FirstChildElement("teleportHome")->QueryIntText(&this->userSettings.teleportHome);
