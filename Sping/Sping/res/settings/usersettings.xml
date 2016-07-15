@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <root>
     <UserSettings>
-        <zNear>0.0000001</zNear>
-        <zFar>1000000000.0</zFar>
+        <zNear>0.0001</zNear>
+        <zFar>100000.0</zFar>
         <fov>75.0</fov>
-        <mouseLookSensitivity>1.0</mouseLookSensitivity>
+        <mouseLookSensitivity>0.01</mouseLookSensitivity>
         <rollSensitivity>0.01</rollSensitivity>
         <!--Reference https://wiki.libsdl.org/SDLScancodeLookup if you want to tinker here-->
         <forward>26</forward>
@@ -15,6 +15,7 @@
         <downward>9</downward>
         <rollLeft>20</rollLeft>
         <rollRight>8</rollRight>
+		<cursorLock>44</cursorLock>
         <orientationReset>18</orientationReset>
         <speedUp>23</speedUp>
         <speedDown>10</speedDown>
@@ -23,6 +24,7 @@
         <fovDown>78</fovDown>
         <fovReset>74</fovReset>
         <!--These few may seem to overlap other keys, but they will need Ctrl to also be pressed-->
+		<modifier>224</modifier>
         <teleportHome>11</teleportHome>
         <toggleInertia>12</toggleInertia>
         <toggleWireframe>26</toggleWireframe>
