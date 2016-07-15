@@ -1,6 +1,8 @@
 #include <render/renderable.h>
 #include <iostream>
 
+#include <game/game.h>
+
 #include <tools/meshes.h>
 #include <tools/shaders.h>
 #include <tools/textures.h>
@@ -14,9 +16,7 @@ Renderable::~Renderable()
 }
 
 int Renderable::create(const int64_t id, const glm::mat4 spawnPos, 
-	Meshes *meshesSrc,
-	Shaders *shadersSrc,
-	Textures *texturesSrc,
+	Game *game,
 	const std::vector<std::string> &shaderNames,
 	const std::map<std::string, std::vector<std::string>> &meshAndTexes)
 {
@@ -30,22 +30,33 @@ int Renderable::create(const int64_t id, const glm::mat4 spawnPos,
 	this->_shadersVecPtr.clear();
 	this->_meshAndTexesVecPtr.clear();
 
-	//i forgot to initialise these, and kept getting access violation errors at runtime, nice one dumbo
-	this->_meshesPtr = meshesSrc;
-	this->_shadersPtr = shadersSrc;
-	this->_texturesPtr = texturesSrc;
+	this->_gamePtr = game;
 
-	//TODO: check for nullptrs
 	for (auto &element : this->_shaderNames)
 	{
-		this->_shadersVecPtr.push_back(this->_shadersPtr->get(element));
+		if (this->_gamePtr->shaders.get(element) == nullptr)
+		{
+			std::cout << "Couldn't get a shader resource with the name of " << element << " for renderable with ID " << this->_ID << "\n";
+			return -1;
+		}
+		this->_shadersVecPtr.push_back(this->_gamePtr->shaders.get(element));
 	}
 
 	for (auto &element : this->_meshAndTexes)
 	{
+		if (this->_gamePtr->meshes.get(element.first) == nullptr)
+		{
+			std::cout << "Couldn't get a mesh resource with the name of " << element.first << " for renderable with ID " << this->_ID << "\n";
+			return -2;
+		}
 		for (auto &eleElement : element.second)
 		{
-			this->_meshAndTexesVecPtr[this->_meshesPtr->get(element.first)].push_back(this->_texturesPtr->get(eleElement));
+			if (this->_gamePtr->textures.get(eleElement) == nullptr)
+			{
+				std::cout << "Couldn't get a mesh resource with the name of " << eleElement << " for renderable with ID " << this->_ID << "\n";
+				return -3;
+			}
+			this->_meshAndTexesVecPtr[this->_gamePtr->meshes.get(element.first)].push_back(this->_gamePtr->textures.get(eleElement));
 		}
 	}
 
@@ -68,14 +79,29 @@ int Renderable::update(const glm::mat4 newPos,
 
 	for (auto &element : this->_shaderNames)
 	{
-		this->_shadersVecPtr.push_back(this->_shadersPtr->get(element));
+		if (this->_gamePtr->shaders.get(element) == nullptr)
+		{
+			std::cout << "Couldn't get a shader resource with the name of " << element << " for renderable with ID " << this->_ID << "\n";
+			return -1;
+		}
+		this->_shadersVecPtr.push_back(this->_gamePtr->shaders.get(element));
 	}
 
 	for (auto &element : this->_meshAndTexes)
 	{
+		if (this->_gamePtr->meshes.get(element.first) == nullptr)
+		{
+			std::cout << "Couldn't get a mesh resource with the name of " << element.first << " for renderable with ID " << this->_ID << "\n";
+			return -2;
+		}
 		for (auto &eleElement : element.second)
 		{
-			this->_meshAndTexesVecPtr[this->_meshesPtr->get(element.first)].push_back(this->_texturesPtr->get(eleElement));
+			if (this->_gamePtr->textures.get(eleElement) == nullptr)
+			{
+				std::cout << "Couldn't get a mesh resource with the name of " << eleElement << " for renderable with ID " << this->_ID << "\n";
+				return -3;
+			}
+			this->_meshAndTexesVecPtr[this->_gamePtr->meshes.get(element.first)].push_back(this->_gamePtr->textures.get(eleElement));
 		}
 	}
 
