@@ -10,7 +10,7 @@ Camera::~Camera()
 
 void Camera::setup(float fovY, float aspect, float nearPlane, float farPlane, const glm::vec3 &spawnPos)
 {
-	this->_rotHitCountMax = 1000;
+	this->_rotHitCountMax = 10000;
 	this->_rotHitCount = 0;
 	this->_recalcViewMat = true;
 
@@ -27,6 +27,8 @@ void Camera::setup(float fovY, float aspect, float nearPlane, float farPlane, co
 	this->_recalcProjMat = false;
 
 	this->initLocalCoordSys(spawnPos);
+
+	this->normalizeCam();
 }
 
 void Camera::setFOV(float newFOV)
@@ -194,7 +196,8 @@ void Camera::roll(float angle)
 
 void Camera::pitch(float angle)
 {
-	glm::quat q = glm::angleAxis(angle, -this->_leftVec);
+	//TODO: try'n fix this
+	glm::quat q = glm::angleAxis(angle, this->_leftVec);
 
 	this->_upVec = glm::rotate(q, this->_upVec);
 	this->_frontVec = glm::rotate(q, this->_frontVec);
