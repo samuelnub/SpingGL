@@ -6,42 +6,31 @@
 #include <SDL2/SDL_opengl.h>
 #include <string>
 
+class Game;
+
 class Window
 {
 private:
+	Game *_gamePtr;
+
 	SDL_GLContext _context;
 
-	int _glMajor;
-	int _glMinor;
-
-	int _depthBits;
-	int _stencilBits;
-	bool _doublebuffer;
-	int _multisamples;
-
-	std::string _name;
-
-	int _width;
-	int _height;
-	bool _fullscreen;
-
-	int _failedAttempts;
-
 	SDL_DisplayMode _displayMode;
-	SDL_Renderer *_gottenRenderer;
 
-	int _createdWidth;
-	int _createdHeight;
+	SDL_Renderer *_gottenRenderer; //the dimensions of the window actually created
 
 public:
 	Window();
 	~Window(); //deletes sdl window context and cleans up some shizmo
 
-	void setup();
+	void setup(Game *game);
+
+	int createdWidth;
+	int createdHeight;
 
 	SDL_Window *_window;
+
 protected:
-	void loadXML(const char *filePath);
 
 };
 
