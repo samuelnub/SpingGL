@@ -2,29 +2,52 @@
 #ifndef GAME_STATES_H
 #define GAME_STATES_H
 
-#include <string>
-#include <map>
+#include <array>
+#include <iostream>
 
-//contains all the useless bools which control everything, game class should have one of this as its members
+enum class State //a lot are redundant for now, just showing
+{
+	IN_GAME,
+	MENU_MAIN,
+	MENU_PAUSE,
+	MENU_LOADING,
+	DEV,
+	DEV_WIREFRAME,
+
+
+	ENUM_SIZE
+};
+
+
+//contains all the useless bools which controls main stuff, game class should have one of this as its members
 class States
 {
 private:
-	std::map<std::string, bool> _states;
+	//c style casting always makes me tingle on the inside hehe
+	std::array<bool, (size_t)State::ENUM_SIZE> _states;
 
 public:
 	States();
 	~States();
 
 	void setup();
-	int get(const std::string &key);
-	//does not set if it doesnt exist
-	void set(const std::string &key, const bool state); 
-	//toggles existing state
-	void toggle(const std::string &key);
-	//if what you wanna add already exists, itll just set the state you give it
-	void add(const std::string &key, const bool state); 
-	//in case you need to know
-	void list(); 
+	
+	inline bool get(State state)
+	{
+		return this->_states.at((size_t)state);
+	}
+
+	inline void set(State state, bool value)
+	{
+		this->_states.at((size_t)state) = value;
+		std::cout << "State enum " << (int)state << " has been set to " << value << "!\n";
+	}
+
+	inline void toggle(State state)
+	{
+		this->_states.at((size_t)state) = !this->_states.at((size_t)state);
+		std::cout << "State enum " << (int)state << " has been toggled to " << this->_states.at((size_t)state) << "!\n";
+	}
 
 protected:
 
