@@ -50,6 +50,7 @@ struct UserSettings
 	int downward;
 	int rollLeft;
 	int rollRight;
+	int cursorLock;
 
 	int orientationReset;
 
@@ -61,6 +62,7 @@ struct UserSettings
 	int fovDown;
 	int fovReset;
 
+	int modifier;
 	int teleportHome;
 	int toggleInertia;
 	int toggleWireframe; //w, most likely the same as forward, but this will check if control is also currently held
