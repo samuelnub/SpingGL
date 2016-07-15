@@ -20,6 +20,7 @@
 #include <tools/shaders.h>
 #include <tools/textures.h>
 
+#include <game/actors/actormanager.h>
 #include <render/scene.h>
 //TODO: get rid lol
 #include <render/renderable.h>
@@ -46,11 +47,12 @@ public:
 	Shaders shaders;
 	Textures textures;
 
+	ActorManager actormanager;
 	Scene scene;
 	//TODO: temp test lol
 	Renderable testoRendo;
 	Renderable testoRendoTwo;
-	Camera camera;
+
 protected:
 	
 
