@@ -31,6 +31,8 @@ public:
 	int setup(Game *game);
 
 	//reflecting input's processing functions
+	void impuseEveryFrame();
+
 	void impulseKeyDown();
 
 	void impulseKeyHeld();
