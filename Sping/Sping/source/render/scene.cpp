@@ -102,13 +102,9 @@ void Scene::draw()
 		this->_gamePtr->shaders.utilise(iter->first);
 
 		//TODO: sending camera matrices should go here (V and P)
-		glm::mat4 viewMat;
-		glm::mat4 projMat;
-		this->_gamePtr->eyes.update();
-		this->_gamePtr->eyes.getMatrices(viewMat, projMat);
 
-		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "view"), 1, GL_FALSE, glm::value_ptr(viewMat));
-		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "projection"), 1, GL_FALSE, glm::value_ptr(projMat));
+		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "view"), 1, GL_FALSE, glm::value_ptr(this->_gamePtr->actormanager.player._camera.getViewMat()));
+		glUniformMatrix4fv(glGetUniformLocation(iter->first->programID, "projection"), 1, GL_FALSE, glm::value_ptr(this->_gamePtr->actormanager.player._camera.getProjMat()));
 
 		//==========================================================
 		//=========Each renderable that uses this shader============
