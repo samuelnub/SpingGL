@@ -14,6 +14,7 @@ Game::Game()
 	shaders.setup();
 	textures.setup();
 
+	actormanager.setup(this);
 	scene.setup(this);
 
 	//TODO: stupid test stuff lol
@@ -30,13 +31,11 @@ Game::Game()
 
 	glm::mat4 testMat;
 	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.0f, 0.0f));
-	testoRendo.create(69, testMat, &this->meshes, &this->shaders, &this->textures, _shadeTest, _templol);
+	testoRendo.create(69, testMat, this, _shadeTest, _templol);
 
-	testoRendoTwo.create(42, testMat, &this->meshes, &this->shaders, &this->textures, _shadeTest, _templolTwo);
+	testoRendoTwo.create(42, testMat, this, _shadeTest, _templolTwo);
 	scene.stage(&testoRendo);
 	scene.stage(&testoRendoTwo);
-
-	camera.setup(glm::radians(60.0f), 1280.0f / 720.0f, 0.001f, 1000000.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	while (true)
 		this->loop();
@@ -50,13 +49,8 @@ void Game::loop()
 {
 	input.update(SDL_GetTicks());
 
-	if (this->states.get("nevada") == -1)
-	{
-		this->states.add("nevada", true);
-	}
-
 	testoRendo.update(glm::rotate(*testoRendo.getTrans(), glm::radians(0.05f * this->input.getDelta()), glm::vec3(0.5f, 0.5f, 0.0f)));
-
+	actormanager.update();
 	scene.draw();
 
 	SDL_GL_SwapWindow(this->window._window);
