@@ -10,9 +10,7 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-class Meshes;
-class Shaders;
-class Textures;
+class Game;
 
 struct Mesh;
 struct Shader;
@@ -27,9 +25,7 @@ private:
 
 	glm::mat4 _worldTrans;
 
-	Meshes *_meshesPtr;
-	Shaders *_shadersPtr;
-	Textures *_texturesPtr;
+	Game *_gamePtr;
 
 	std::vector<std::string> _shaderNames;
 	std::map<std::string, std::vector<std::string>> _meshAndTexes;
@@ -43,9 +39,7 @@ public:
 
 	//specify initial resources to use, your upper level "actors" which involve this class will set up this in their own constructor
 	int create(const int64_t id, const glm::mat4 spawnPos,
-		Meshes *meshesSrc,
-		Shaders *shadersSrc,
-		Textures *texturesSrc,
+		Game *game,
 		const std::vector<std::string> &shaderNames,
 		const std::map<std::string, std::vector<std::string>> &meshAndTexes);
 
