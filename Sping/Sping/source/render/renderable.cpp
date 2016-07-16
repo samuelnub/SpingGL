@@ -18,11 +18,14 @@ Renderable::~Renderable()
 int Renderable::create(const int64_t id, const glm::mat4 spawnPos, 
 	Game *game,
 	const std::vector<std::string> &shaderNames,
-	const std::map<std::string, std::vector<std::string>> &meshAndTexes)
+	const std::map<std::string, std::vector<std::string>> &meshAndTexes,
+	DrawType drawtype)
 {
 	this->_ID = id;
 
 	this->_worldTrans = spawnPos;
+
+	this->_drawtype = drawtype;
 
 	this->_shaderNames = shaderNames;
 	this->_meshAndTexes = meshAndTexes;
@@ -67,9 +70,12 @@ int Renderable::create(const int64_t id, const glm::mat4 spawnPos,
 
 int Renderable::update(const glm::mat4 newPos,
 	const std::vector<std::string> &shaderNames,
-	const std::map<std::string, std::vector<std::string>> &meshAndTexes)
+	const std::map<std::string, std::vector<std::string>> &meshAndTexes,
+	DrawType drawtype)
 {
 	this->_worldTrans = newPos;
+
+	this->_drawtype = drawtype;
 
 	this->_shaderNames = shaderNames;
 	this->_meshAndTexes = meshAndTexes;
