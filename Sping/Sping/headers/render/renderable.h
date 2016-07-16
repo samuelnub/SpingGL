@@ -16,6 +16,13 @@ struct Mesh;
 struct Shader;
 struct Texture;
 
+enum class DrawType
+{
+	TRIANGLES,
+	POINTS,
+	LINES
+};
+
 //note: do not inherit off of this, instead, compose with this
 //an instance of a renderable only contains necessary information such as transformation in world space, and pointers to meshes, textures and shaders held in the scene object. Instances of these renderables should exist only in the scene's Renderable map, with strings denotating each instance. tldr its like that "model" class from before, but with shared resources
 class Renderable
@@ -23,9 +30,11 @@ class Renderable
 private:
 	uint64_t _ID;
 
+	Game *_gamePtr;
+
 	glm::mat4 _worldTrans;
 
-	Game *_gamePtr;
+	DrawType _drawtype;
 
 	std::vector<std::string> _shaderNames;
 	std::map<std::string, std::vector<std::string>> _meshAndTexes;
@@ -41,7 +50,8 @@ public:
 	int create(const int64_t id, const glm::mat4 spawnPos,
 		Game *game,
 		const std::vector<std::string> &shaderNames,
-		const std::map<std::string, std::vector<std::string>> &meshAndTexes);
+		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
+		DrawType drawtype = DrawType::TRIANGLES);
 
 	//called each frame, just updates pos
 	inline void update(const glm::mat4 newPos)
@@ -52,7 +62,8 @@ public:
 	//overridden if you need to update the assets it refers to
 	int update(const glm::mat4 newPos,
 		const std::vector<std::string> &shaderNames,
-		const std::map<std::string, std::vector<std::string>> &meshAndTexes);
+		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
+		DrawType drawtype = DrawType::TRIANGLES);
 	
 	//inline functions cant be forward declared :(((
 	inline int64_t getID()
@@ -63,6 +74,11 @@ public:
 	inline glm::mat4 *getTrans() 
 	{
 		return &this->_worldTrans;
+	}
+
+	inline DrawType getDrawType()
+	{
+		return this->_drawtype;
 	}
 
 	inline std::vector<std::string> *getShaderNames()
