@@ -152,7 +152,21 @@ void Scene::draw()
 				}
 
 				glBindVertexArray(element.first->vaoID);
-				glDrawElements(GL_TRIANGLES, this->_gamePtr->meshes.getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
+				switch (iter->second[i]->getDrawType())
+				{
+				case DrawType::TRIANGLES:
+					glDrawElements(GL_TRIANGLES, this->_gamePtr->meshes.getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
+					break;
+				case DrawType::LINES:
+					glDrawElements(GL_LINES, this->_gamePtr->meshes.getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
+					break;
+				case DrawType::POINTS:
+					glDrawElements(GL_POINTS, this->_gamePtr->meshes.getIndexData(element.first->pushID)->size(), GL_UNSIGNED_INT, 0);
+					break;
+				default:
+					std::cout << "how did you not specify a draw type???! i cant believe you've done this\n";
+				}
+
 				glBindVertexArray(0);
 
 				for (unsigned int j = 0; j < element.second.size(); j++)
