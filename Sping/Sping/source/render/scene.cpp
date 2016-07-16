@@ -165,8 +165,8 @@ void Scene::draw()
 					break;
 				default:
 					std::cout << "how did you not specify a draw type???! i cant believe you've done this\n";
+					break;
 				}
-
 				glBindVertexArray(0);
 
 				for (unsigned int j = 0; j < element.second.size(); j++)
