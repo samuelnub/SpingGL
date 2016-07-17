@@ -3,10 +3,6 @@
 
 #include <game/game.h>
 
-#include <tools/meshes.h>
-#include <tools/shaders.h>
-#include <tools/textures.h>
-
 Renderable::Renderable()
 {
 }
