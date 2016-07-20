@@ -19,12 +19,14 @@
 #include <tools/meshes.h>
 #include <tools/shaders.h>
 #include <tools/textures.h>
+#include <tools/generators/uuidgen.h>
 
 #include <game/actors/actormanager.h>
 #include <render/scene.h>
 //TODO: get rid lol
 #include <render/renderable.h>
 #include <tools/camera.h>
+#include <tools/generators/galaxygen.h>
 
 class Game
 {
@@ -47,11 +49,14 @@ public:
 	Shaders shaders;
 	Textures textures;
 
+	UUIDGenerator uuidgen;
+
 	ActorManager actormanager;
 	Scene scene;
 	//TODO: temp test lol
 	Renderable testoRendo;
 	Renderable testoRendoTwo;
+	GalaxyGenerator galaxyGenerator;
 
 protected:
 	
