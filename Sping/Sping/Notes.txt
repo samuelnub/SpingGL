@@ -62,7 +62,7 @@
 	me from the future writing this so that it appears i made progress on this day, when in fact, i mostly procrastinated
 
 19 July 2016
-	working on galaxygen class, not much else to say, had some homework, ate some chicken, caught a bellsprout, and yeah
+	reworking on galaxygen class, not much else to say, had some homework, ate some chicken, caught a bellsprout, and yeah
 
 20 July 2016
 	got galaxygen class working, i was giving it vec3.length instead of length(vec3), nice one idiot
@@ -70,7 +70,8 @@
 
 21 July 2016
 	asthetic tweaks
-
+	might want to change the whole coloring method currently to using another shader, and using layout location 1 (meant to be normals) as color, and providing actual color instead of referencing an image, allows more fine control and smoother gradients
+	should focus more on just purely generating spiral galaxies as the only option in generate()
 	
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
