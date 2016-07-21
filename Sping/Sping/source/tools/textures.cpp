@@ -63,7 +63,7 @@ int Textures::store(std::string name, const char *filePath, const GLchar *type)
 void Textures::list()
 {
 	std::cout << "Here's a list of all loaded textures:\n";
-	std::map<std::string, Texture>::const_iterator iter;
+	std::unordered_map<std::string, Texture>::const_iterator iter;
 	iter = this->_textures.begin();
 	while (iter != this->_textures.end())
 	{

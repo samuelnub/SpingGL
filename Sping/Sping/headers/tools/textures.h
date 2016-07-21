@@ -13,7 +13,7 @@
 #include <SDL2/SDL_opengl.h>
 
 #include <SOIL/SOIL.h>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 //naming convention: make sure your shader has a "material" struct with sampler2D members called "texture_diffuse1"... or just "texture_" + type + number, check scene.cpp's draw definition to see what uniform name it sends.
@@ -27,7 +27,7 @@ struct Texture
 class Textures
 {
 private:
-	std::map<std::string, Texture> _textures;
+	std::unordered_map<std::string, Texture> _textures;
 
 public:
 	Textures();

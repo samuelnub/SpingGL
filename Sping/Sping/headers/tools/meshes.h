@@ -13,7 +13,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <vector>
 #include <array>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include <glm\glm.hpp>
@@ -39,7 +39,7 @@ struct Mesh
 class Meshes
 {
 private:
-	std::map<std::string, Mesh> _meshes;
+	std::unordered_map<std::string, Mesh> _meshes;
 
 	//TODO: read this limit off of user config, i'd call this one'a those so-called "engine limitations"
 	std::array<std::vector<Vertex>, 10000> _vertexData;

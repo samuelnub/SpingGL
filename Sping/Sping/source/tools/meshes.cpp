@@ -72,12 +72,18 @@ int Meshes::store(const std::string name, std::vector<Vertex>& vertices, const s
 		return -1;
 	}
 
+	if (vertices.size() == 0 || indices.size() == 0)
+	{
+		std::cout << "You just sent blank vertex or index data! Can't do anything with it you idiot!\n";
+		return -2;
+	}
+
 	//push count is like the unique ID, by the way, it stores it in the vector starting from 1, not 0 indexing, so vertexData[0] should theoretically be empty
 	//TODO: also read this limit from user config
 	if (this->_pushCount >= 10000 - 2)
 	{
 		std::cout << "Reached mesh limit!\a\n";
-		return -2;
+		return -3;
 	}
 
 	this->_pushCount++;
@@ -150,7 +156,7 @@ int Meshes::store(const std::string name, std::vector<Vertex>& vertices, const s
 void Meshes::list()
 {
 	std::cout << "Here are all your currently loaded meshes:\n";
-	std::map<std::string, Mesh>::const_iterator iter;
+	std::unordered_map<std::string, Mesh>::const_iterator iter;
 	iter = this->_meshes.begin();
 	while (iter != this->_meshes.end())
 	{

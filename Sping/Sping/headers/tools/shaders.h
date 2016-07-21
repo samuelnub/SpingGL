@@ -11,6 +11,7 @@
 #endif
 
 #include <SDL2/SDL_opengl.h>
+#include <unordered_map>
 #include <map>
 #include <string>
 
@@ -37,7 +38,7 @@ struct Shader
 class Shaders
 {
 private:
-	std::map<std::string, Shader> _shaders;
+	std::unordered_map<std::string, Shader> _shaders;
 
 public:
 	Shaders();

@@ -162,7 +162,7 @@ void Shaders::utilise(const Shader * shader)
 void Shaders::list()
 {
 	std::cout << "Here's a list of all loaded shaders:\n";
-	std::map<std::string, Shader>::const_iterator iter;
+	std::unordered_map<std::string, Shader>::const_iterator iter;
 	iter = this->_shaders.begin();
 	while (iter != this->_shaders.end())
 	{
