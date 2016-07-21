@@ -46,7 +46,7 @@ Galaxy GalaxyGenerator::generate(int64_t seed)
 	Galaxy tempGalaxy;
 	tempGalaxy.seed = seed;
 	this->_gamePtr->uuidgen.gen(tempGalaxy.uuid);
-	
+	choice = 2; //TODO: may just make it spiral-only
 	switch (choice)
 	{
 	case static_cast<int>(GalaxyType::ELLIPTICAL) :
@@ -134,12 +134,13 @@ std::vector<Star> GalaxyGenerator::genElliptical(boost::mt19937 &module, bool sh
 	{
 		Star tempStar;
 		tempStar.seed = starSeedDistrib(module);
-		this->color(tempStar, module);
-		this->_gamePtr->uuidgen.gen(tempStar.uuid);
 
 		tempPos.x = deviationX(module);
 		tempPos.y = deviationY(module);
 		tempPos.z = deviationZ(module);
+		
+		this->color(tempStar, module);
+		this->_gamePtr->uuidgen.gen(tempStar.uuid);
 
 		tempStar.vertInfo.pos = tempPos;
 		tempStars.push_back(tempStar);
@@ -182,8 +183,10 @@ std::vector<Star> GalaxyGenerator::genIrregular(boost::mt19937 &module)
 
 std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 {
-	boost::random::normal_distribution<> swirlDistrib(4.0f, 1.0f);
+	boost::random::normal_distribution<> swirlDistrib(5.0f, 1.0f);
 	double swirl = PI * swirlDistrib(module);
+
+	boost::random::normal_distribution<> swirlOffsetDistrib(swirl, 0.05f);
 
 	boost::random::uniform_int_distribution<> sizeDistrib(1000, 10000);
 	unsigned int size = sizeDistrib(module);
@@ -208,7 +211,8 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	boost::random::uniform_real_distribution<> metaCenterDistrib(0.15f, 0.25f);
 	boost::random::uniform_real_distribution<> metaCountDistrib(maxMetas * 0.8f, maxMetas * 1.8f);
 
-	boost::random::normal_distribution<> schemeArmDistrib(3.0f, 1.0f);
+	boost::random::uniform_int_distribution<> schemeDistrib(0, 5); //dont want a black hole scheme lol
+	boost::random::normal_distribution<> schemeArmDistrib(schemeDistrib(module), 0.75f);
 
 	double metaCenter = metaCenterDistrib(module);
 	for (int arm = 0; arm < armCount; arm++)
@@ -238,7 +242,7 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 			{
 				this->scale(element, glm::vec3(metaScale, metaScale, metaScale));
 				this->offset(element, center);
-				this->swirl(element, upVec, swirl, module);
+				this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 				this->color(element, module, schemeArm);
 			}
 			tempStars.insert(std::end(tempStars), std::begin(tempArmMetaStars), std::end(tempArmMetaStars));
@@ -246,22 +250,22 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	}
 	
 	//generate center densely-packed cluster (or irregular)==========
-	boost::random::uniform_int_distribution<> schemeCenterDistrib(0, 2);
+	StarType schemeCenter = static_cast<StarType>(schemeDistrib(module));
 	std::vector<Star> tempCenterStars;
 	tempCenterStars = this->genIrregular(module);
 	for (auto &element : tempCenterStars)
 	{
 		this->scale(element, glm::vec3(centerScale, centerScale * 0.6f, centerScale));
-		this->swirl(element, upVec, swirl * 5, module);
-		this->color(element, module, static_cast<StarType>(schemeCenterDistrib(module)));
+		this->swirl(element, upVec, swirlOffsetDistrib(module) * 5, module);
+		this->color(element, module, schemeCenter);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempCenterStars), std::end(tempCenterStars));
 	tempCenterStars = this->genIrregular(module);
 	for (auto &element : tempCenterStars)
 	{
 		this->scale(element, glm::vec3(centerScale * 4.0f, centerScale * 0.6f, centerScale));
-		this->swirl(element, upVec, swirl * 5, module);
-		this->color(element, module, static_cast<StarType>(schemeCenterDistrib(module)));
+		this->swirl(element, upVec, swirlOffsetDistrib(module) * 5, module);
+		this->color(element, module, schemeCenter);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempCenterStars), std::end(tempCenterStars));
 
@@ -271,21 +275,21 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	for (auto &element : tempBackgroundStars)
 	{
 		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module), centerScale * 0.4f, centerScale));
-		this->swirl(element, upVec, swirl, module);
+		this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
 	tempBackgroundStars = this->genIrregular(module);
 	for (auto &element : tempBackgroundStars)
 	{
-		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module) * 0.5f, centerScale * 0.3f, centerScale * backgroundLengthDistrib(module) * 0.5f));
-		this->swirl(element, upVec, swirl, module);
+		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module) * 0.75f, centerScale * 0.3f, centerScale * backgroundLengthDistrib(module)));
+		this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
-	tempBackgroundStars = this->genIrregular(module);
+	tempBackgroundStars = this->genElliptical(module, true);
 	for (auto &element : tempBackgroundStars)
 	{
 		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module), centerScale * 0.4f, centerScale * backgroundLengthDistrib(module) * 0.75f));
-		this->swirl(element, upVec, swirl, module);
+		this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
 
