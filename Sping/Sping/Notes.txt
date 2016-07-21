@@ -39,13 +39,42 @@
 	quaternion camera? ehHHHHHHHHH, gonna redo, really messed up right now
 	command class that sends all functions needed when events happen, messy, but better than having input commands hidden in every nook and cranny of this project
 
+13 July 2016
+	barebones quaternion camera class, to be used by the eventual player class, needs a lot of refinement in terms of controlling it externally, but the class itself is fully usable
+
+14 July 2016
+	refactoring of xml settings handling, a helper "settings" class handles all the xml files needed, will most likely be expanded upon further need. right now it handles grabbing info about graphics and user settings
+	
+15 July 2016
+	basic player class in actor manager, actor manager gets updated every frame in the main loop, and this update function runs through all the actors and calls their update functions
+	commands class going to be reserved for system level function calls and stuff, or else its just going to be done on a per-class basis
+
+16 July 2016
+	libnoise dependancy for no reason, may remove until needed in the future
+	renderables can specify what they wanna be drawn as, triangles, lines or points
+	a galaxy generator that i dont know whether it works or not yet lol
+
+17 July 2016
+	elliptical galaxy star points wORK, credit due to https://github.com/martindevans/CasualGodComplex for c# implementation
+	give a seeded noise module, and the elliptical generator will make a copy and act upon it
+
+18 July 2016
+	me from the future writing this so that it appears i made progress on this day, when in fact, i mostly procrastinated
+
+19 July 2016
+	working on galaxygen class, not much else to say, had some homework, ate some chicken, caught a bellsprout, and yeah
+
+20 July 2016
+	got galaxygen class working, i was giving it vec3.length instead of length(vec3), nice one idiot
+	horribly unoptimised
+
+21 July 2016
+	asthetic tweaks
+
 	
 TODO:
-	refine input class, sort out how to handle triggering the appropriate stuff, aka move player left etc
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
-	with bitmap fonts, make an xml loader
-	get soil up and running
 	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results
-	camera class, quaternion based preferably
 	an example of an actor type: model load actor, specifies model filepath on creation and uses assimp
 	try a logarithmic depth buffer for large scales
+	trees
