@@ -46,7 +46,7 @@ Galaxy GalaxyGenerator::generate(int64_t seed)
 	Galaxy tempGalaxy;
 	tempGalaxy.seed = seed;
 	this->_gamePtr->uuidgen.gen(tempGalaxy.uuid);
-	choice = 2; //TODO: unfix choice
+	
 	switch (choice)
 	{
 	case static_cast<int>(GalaxyType::ELLIPTICAL) :
@@ -77,7 +77,7 @@ Galaxy GalaxyGenerator::generate(int64_t seed)
 	centerStar.seed = seed; //hehe, give it the same seed given to this galaxy
 	this->_gamePtr->uuidgen.gen(centerStar.uuid);
 	centerStar.vertInfo.pos = glm::vec3(0.0f, 0.0f, 0.0f);
-	this->color(centerStar, module);
+	this->color(centerStar, module, StarType::BLACK);
 	tempGalaxy.stars.push_back(centerStar);
 
 	std::cout << "Successfully generated " << tempGalaxy.stars.size() << " stars.\n";
@@ -90,14 +90,14 @@ std::vector<Star> GalaxyGenerator::genElliptical(boost::mt19937 &module, bool sh
 	double sizeMax;
 	if (shouldBeSmall == true)
 	{
-		sizeMax = 1600.0f;
+		sizeMax = 1200.0f;
 	}
 	else if (shouldBeSmall == false)
 	{
-		sizeMax = 20000.0f;
+		sizeMax = 30000.0f;
 	}
 
-	boost::random::uniform_real_distribution<> sizeDistrib(800.0f, sizeMax);
+	boost::random::normal_distribution<> sizeDistrib(sizeMax, sizeMax/1000.0f);
 	double size = sizeDistrib(module);
 	
 	boost::random::uniform_real_distribution<> densityMeanDistrib(0.0002f, 0.0003f);
@@ -149,12 +149,12 @@ std::vector<Star> GalaxyGenerator::genElliptical(boost::mt19937 &module, bool sh
 
 std::vector<Star> GalaxyGenerator::genIrregular(boost::mt19937 &module)
 {
-	boost::random::uniform_int_distribution<> countDistrib(5, 20);
+	boost::random::uniform_int_distribution<> countDistrib(200, 500);
 	unsigned int count = countDistrib(module);
 
-	boost::random::uniform_real_distribution<> deviationXDistrib(0.000001f, 0.000004f);
-	boost::random::uniform_real_distribution<> deviationYDistrib(0.000001f, 0.000004f);
-	boost::random::uniform_real_distribution<> deviationZDistrib(0.000001f, 0.000004f);
+	boost::random::uniform_real_distribution<> deviationXDistrib(0.00001f, 0.00004f);
+	boost::random::uniform_real_distribution<> deviationYDistrib(0.00001f, 0.00004f);
+	boost::random::uniform_real_distribution<> deviationZDistrib(0.00001f, 0.00004f);
 
 	boost::random::normal_distribution<> deviationX(0, deviationXDistrib(module));
 	boost::random::normal_distribution<> deviationY(0, deviationYDistrib(module));
@@ -164,9 +164,9 @@ std::vector<Star> GalaxyGenerator::genIrregular(boost::mt19937 &module)
 	glm::vec3 offset;
 	for (unsigned int i = 0; i < count; i++)
 	{
-		offset.x = deviationX(module);
-		offset.y = deviationY(module);
-		offset.z = deviationZ(module);
+		offset.x = deviationX(module)*10;
+		offset.y = deviationY(module)*10;
+		offset.z = deviationZ(module)*10;
 
 		std::vector<Star> tempMetaStars;
 		tempMetaStars = this->genElliptical(module, true);
@@ -182,17 +182,17 @@ std::vector<Star> GalaxyGenerator::genIrregular(boost::mt19937 &module)
 
 std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 {
-	boost::random::normal_distribution<> swirlDistrib(4.5f, 1.0f);
+	boost::random::normal_distribution<> swirlDistrib(4.0f, 1.0f);
 	double swirl = PI * swirlDistrib(module);
 
 	boost::random::uniform_int_distribution<> sizeDistrib(1000, 10000);
 	unsigned int size = sizeDistrib(module);
 	
 	//make a cluster and scale it down to make it dense, like me
-	boost::random::uniform_real_distribution<> centerScaleDistrib(0.2f, 0.35f);
+	boost::random::uniform_real_distribution<> centerScaleDistrib(0.2f, 0.3f);
 	double centerScale = centerScaleDistrib(module) * (size*0.0008f);
 
-	boost::random::uniform_real_distribution<> armScaleDistrib(0.08f, 0.15f);
+	boost::random::uniform_real_distribution<> armScaleDistrib(0.1f, 0.25f);
 
 	std::vector<Star> tempStars;
 	glm::vec3 upVec = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -201,16 +201,20 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	boost::random::uniform_int_distribution<> armCountDistrib(2, 7);
 	unsigned int armCount = armCountDistrib(module);
 	double armAngle = (PI * 2) / armCount;
+	boost::random::uniform_real_distribution<> backgroundLengthDistrib(static_cast<float>(armCount), 8.0f);
 	boost::random::uniform_int_distribution<> spacingDistrib(2, 5);
 	unsigned int spacing = spacingDistrib(module);
 	unsigned int maxMetas = (size / spacing) / armCount;
 	boost::random::uniform_real_distribution<> metaCenterDistrib(0.15f, 0.25f);
 	boost::random::uniform_real_distribution<> metaCountDistrib(maxMetas * 0.8f, maxMetas * 1.8f);
 
+	boost::random::normal_distribution<> schemeArmDistrib(3.0f, 1.0f);
+
 	double metaCenter = metaCenterDistrib(module);
 	for (int arm = 0; arm < armCount; arm++)
 	{
 		unsigned int metaCount = boost::math::round(metaCountDistrib(module));
+
 		for (int i = 0; i < metaCount; i++)
 		{
 			//angle from center of arm
@@ -224,8 +228,9 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 			glm::vec3 center = glm::vec3(0.0f, 0.0f, distance);
 			glm::quat q = glm::angleAxis(angle, upVec);
 
-			center = q * center;
+			StarType schemeArm = static_cast<StarType>(boost::math::iround(schemeArmDistrib(module)));
 
+			center = q * center;
 			std::vector<Star> tempArmMetaStars;
 			tempArmMetaStars = this->genElliptical(module, true);
 			double metaScale = armScaleDistrib(module);
@@ -234,18 +239,21 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 				this->scale(element, glm::vec3(metaScale, metaScale, metaScale));
 				this->offset(element, center);
 				this->swirl(element, upVec, swirl, module);
+				this->color(element, module, schemeArm);
 			}
 			tempStars.insert(std::end(tempStars), std::begin(tempArmMetaStars), std::end(tempArmMetaStars));
 		}
 	}
 	
 	//generate center densely-packed cluster (or irregular)==========
+	boost::random::uniform_int_distribution<> schemeCenterDistrib(0, 2);
 	std::vector<Star> tempCenterStars;
 	tempCenterStars = this->genIrregular(module);
 	for (auto &element : tempCenterStars)
 	{
-		this->scale(element, glm::vec3(centerScale, centerScale, centerScale));
+		this->scale(element, glm::vec3(centerScale, centerScale * 0.6f, centerScale));
 		this->swirl(element, upVec, swirl * 5, module);
+		this->color(element, module, static_cast<StarType>(schemeCenterDistrib(module)));
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempCenterStars), std::end(tempCenterStars));
 	tempCenterStars = this->genIrregular(module);
@@ -253,6 +261,7 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	{
 		this->scale(element, glm::vec3(centerScale * 4.0f, centerScale * 0.6f, centerScale));
 		this->swirl(element, upVec, swirl * 5, module);
+		this->color(element, module, static_cast<StarType>(schemeCenterDistrib(module)));
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempCenterStars), std::end(tempCenterStars));
 
@@ -261,8 +270,22 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	tempBackgroundStars = this->genIrregular(module);
 	for (auto &element : tempBackgroundStars)
 	{
-		this->scale(element, glm::vec3(centerScale * 8.0f, centerScale * 0.4f, centerScale * 4.0f));
-		this->swirl(element, upVec, swirl * 2.0f, module);
+		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module), centerScale * 0.4f, centerScale));
+		this->swirl(element, upVec, swirl, module);
+	}
+	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
+	tempBackgroundStars = this->genIrregular(module);
+	for (auto &element : tempBackgroundStars)
+	{
+		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module) * 0.5f, centerScale * 0.3f, centerScale * backgroundLengthDistrib(module) * 0.5f));
+		this->swirl(element, upVec, swirl, module);
+	}
+	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
+	tempBackgroundStars = this->genIrregular(module);
+	for (auto &element : tempBackgroundStars)
+	{
+		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module), centerScale * 0.4f, centerScale * backgroundLengthDistrib(module) * 0.75f));
+		this->swirl(element, upVec, swirl, module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
 
@@ -281,12 +304,16 @@ void GalaxyGenerator::scale(Star & star, const glm::vec3 & scale)
 
 void GalaxyGenerator::swirl(Star & star, const glm::vec3 & axis, float amount, boost::mt19937 &module)
 {
-	boost::random::uniform_int_distribution<> extendTempYDistrib(2, 32);
+	//TODO: messing around to get cool swirl effects only lol
+	boost::random::uniform_real_distribution<> upDownMulDistrib(0.8f, 2.4f);
+	star.vertInfo.pos.y *= upDownMulDistrib(module);
+
+	boost::random::uniform_int_distribution<> extendTempYDistrib(4, 40);
 	glm::vec3 tempPos = star.vertInfo.pos;
 	tempPos.y *= extendTempYDistrib(module);
 	//HAHAH I WAS DOING DIST = STAR.VERTINFO.POS.LENGTH() WHICH JUST GAVE ME THE SIZE OF THE VEC3 WHICH IS 3 GG
 	double dist = glm::length(tempPos);
-	
+
 	float ang = static_cast<float>(std::pow(dist, 0.1f) * amount);
 	//std::cout << ang << " is the angle apparently\n";
 	glm::quat q = glm::angleAxis(ang, axis);
@@ -296,9 +323,9 @@ void GalaxyGenerator::swirl(Star & star, const glm::vec3 & axis, float amount, b
 	//std::cout << star.vertInfo.pos.x << " " << star.vertInfo.pos.y << " " << star.vertInfo.pos.z << " after\n\n";
 }
 
-void GalaxyGenerator::color(Star & star, boost::mt19937 &module)
+void GalaxyGenerator::color(Star & star, boost::mt19937 &module, StarType scheme)
 {
-	boost::random::uniform_int_distribution<> starTypeDistrib(0, 5);
+	boost::random::uniform_int_distribution<> starTypeDistrib(0, 10); //dangling numbers will use default: which will be the scheme
 	boost::random::uniform_int_distribution<> starLuminosityDistrib(0, 4);
 
 	int color = starTypeDistrib(module);
@@ -336,8 +363,8 @@ void GalaxyGenerator::color(Star & star, boost::mt19937 &module)
 		star.vertInfo.uv.x = static_cast<float>(13 / 14.0f);
 		break;
 	default:
-		star.type = StarType::YELLOW;
-		star.vertInfo.uv.x = static_cast<float>(5 / 14.0f);
+		star.type = scheme;
+		star.vertInfo.uv.x = static_cast<float>((static_cast<float>(scheme)*2+1) / 14.0f);
 		break; // just in case lol, just make it yellow
 	}
 
