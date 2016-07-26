@@ -72,6 +72,18 @@
 	asthetic tweaks
 	might want to change the whole coloring method currently to using another shader, and using layout location 1 (meant to be normals) as color, and providing actual color instead of referencing an image, allows more fine control and smoother gradients
 	should focus more on just purely generating spiral galaxies as the only option in generate()
+	might work on segmenting individual galaxies into an octree
+	stop mucking around and get back to work
+
+25 July 2016
+	waddup
+	went out for the weekend :(((
+	working on universe and galaxy actors, with their classname having the prefix A-, kinda like how UE handles it
+	stored meshes and textures made by actors will be stored with a prefix to their class name, eg "AGalaxy", then if it were to be specific, eg galaxy mesh vert data, it would be suffixed with their UUID lecically cast to string, with a hyphen separating them
+
+26 July 2016
+	still working on AGalaxy actor, finishing up on it though, may focus on AUniverse tomorrow.
+	may utilize multiple framebuffers
 	
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
