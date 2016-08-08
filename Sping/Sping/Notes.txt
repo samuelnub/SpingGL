@@ -89,6 +89,15 @@
 	wewlads
 	working on refactoring scene class to handle multiple framebuffers
 	ps, those shaders have inconsistent #versions lol
+
+8 August 2016
+	oh man
+	spiffed up the scene class a bit, but will most likely store renderables array as a hashmap instead, i have no clue why i've been using a vector for search
+	fixed up previous memory access violations lol
+	got rendering priority to work, with the good ol' help of clearing the depth buffer
+	probably going to redo the galaxygen class, to make a small "prototype" version first, with a texture2d that can be used for afar, and with all the details like arm count, density, total star count etc... which the final larger one (that AGalaxy will use) will extrapolate from
+	actual positional data for stuff like galaxies (for querying) to be stored as doubles, but rendered (transform matrix) as the usual float
+	rework on octrees, maybe a separate class for managing them
 	
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
@@ -96,3 +105,4 @@ TODO:
 	an example of an actor type: model load actor, specifies model filepath on creation and uses assimp
 	try a logarithmic depth buffer for large scales
 	trees
+	physx integration for well, physics(far future) ???
