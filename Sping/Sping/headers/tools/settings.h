@@ -27,6 +27,13 @@ struct GraphicsSettings
 	int maxTexWidth; //TODO: for eventual texture generation
 	int maxTexHeight;
 	int maxLod; //max recursion level for creating lod meshes
+
+	int universeMaxCount;
+	float universeCellSize;
+	int universeCellWidthCount;
+
+	int galaxyMaxCount;
+	int galaxyCellWidthCount;
 };
 
 //========================================================
@@ -109,7 +116,7 @@ public:
 
 protected:
 	int loadFile(tinyxml2::XMLDocument &doc, const char *filePath, const char *defaults);
-	void checkElement(tinyxml2::XMLElement *element, const char *filePath);
+	void checkElement(tinyxml2::XMLElement *element);
 
 	//setup() should load these internally
 	int loadGraphicsSettings();

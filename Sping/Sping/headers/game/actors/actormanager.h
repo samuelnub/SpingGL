@@ -3,9 +3,17 @@
 #define GAME_ACTORS_ACTOR_MANAGER_H
 
 #include <vector>
+#include <octree/octree.h>
+
+#include <boost/uuid/uuid.hpp>
 
 //includes for actor types
 #include <game/actors/player.h>
+#include <game/actors/universe.h>
+#include <game/actors/galaxy.h>
+
+//includes for generators that these actors utilize
+#include <tools/generators/galaxygen.h>
 
 class Game;
 
@@ -13,11 +21,8 @@ class Game;
 class ActorManager
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
-	//TODO: could generate ID's based on position to make it unique
-	uint64_t _IDcount;
-	
 public:
 	ActorManager();
 	~ActorManager();
@@ -28,14 +33,24 @@ public:
 	//runs through arrays and calls each one's update function (they should be inlined)
 	void update();
 
-	//=========================================================================
-	//=============Arrays for actor types, or singular special ones============
-	//=========================================================================
-	Player player;
-	//sorry theyre public
+	//===============================================
+	//============Containers for AActors=============
+	//===============================================
+	APlayer player;
+	AUniverse universe;
+	std::vector<AGalaxy> galaxies;
+	//the main thing that actor classes will store is a uniqueptr to an octree in most cases, other than that, they just have pointers to the data they need
+
+	//===============================================
+	//============Generators for AActors=============
+	//===============================================
+	GalaxyGenerator galaxygen;
 
 protected:
-
+	//protected funcs called by main setup() to do the initial setting up of each appropriate actor (certain actors may need certain shaders set up... etc)
+	void setupPlayer();
+	void setupUniverse();
+	void setupGalaxies();
 
 };
 

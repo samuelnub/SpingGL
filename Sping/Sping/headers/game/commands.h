@@ -22,7 +22,7 @@ class Game;
 class Commands
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 public:
 	Commands();

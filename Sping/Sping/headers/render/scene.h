@@ -12,12 +12,13 @@
 
 #include <vector>
 #include <map>
+#include <array>
 
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-class Renderable;
+#include <render/renderable.h>
 
 struct Mesh;
 struct Shader;
@@ -29,13 +30,12 @@ class Game;
 class Scene
 {
 private:
+	Game *_gamePtr = nullptr;
+	// TODO: use hashmap with bools instead
 	std::vector<Renderable *> _stagedRenderables;
-	//ActorManager *_actors;
-	//std::vector<Renderables> _stagedRenderables;
-
-	Game *_gamePtr;
-
-	std::map<Shader *, std::vector<Renderable *>> _stagedShaders;
+	
+	std::array<std::map<Shader *, std::vector<Renderable *>>, 
+	static_cast<int>(DrawPriority::ENUM_COUNT)> _staged;
 
 public:
 	Scene();

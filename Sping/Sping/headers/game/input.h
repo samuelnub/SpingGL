@@ -12,7 +12,7 @@ class Game;
 class Input
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 	SDL_Event _event;
 

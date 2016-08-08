@@ -7,7 +7,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -72,9 +72,9 @@ struct Galaxy
 class GalaxyGenerator 
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
-	std::map<int64_t, Galaxy> _galaxies;
+	std::unordered_map<int64_t, Galaxy> _galaxies;
 
 public:
 	GalaxyGenerator();
@@ -106,7 +106,7 @@ protected:
 	void offset(Star &star, const glm::vec3 &offset);
 	void scale(Star &star, const glm::vec3 &scale);
 	void swirl(Star &star, const glm::vec3 &axis, float amount, boost::mt19937 &module);
-	void color(Star &star, boost::mt19937 &module); //based on type, apply UV coords
+	void color(Star &star, boost::mt19937 &module, StarType scheme = StarType::RED); //based on type, apply UV coords
 };
 
 #endif

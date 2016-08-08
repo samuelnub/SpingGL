@@ -11,7 +11,7 @@ class Game;
 class Window
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 	SDL_GLContext _context;
 

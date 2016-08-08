@@ -20,7 +20,7 @@ void Camera::setup(float fovY, float aspect, float nearPlane, float farPlane, co
 	this->_farPlane = farPlane;
 	this->_floatTolerance = 5;
 	this->_projMat = glm::perspective(
-		this->_fovY,
+		glm::radians(this->_fovY),
 		this->_aspect,
 		this->_nearPlane,
 		this->_farPlane);
@@ -33,9 +33,9 @@ void Camera::setup(float fovY, float aspect, float nearPlane, float farPlane, co
 
 void Camera::setFOV(float newFOV)
 {
-	if (newFOV < 0.0f) //yes, i'd like one 0 degree fov please
+	if (newFOV < 0.00001f) //yes, i'd like one 0 degree fov please
 	{
-		newFOV = 0.0f;
+		newFOV = 0.00001f;
 	}
 	else if (newFOV > 180.0f)
 	{

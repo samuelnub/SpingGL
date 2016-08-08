@@ -83,7 +83,12 @@
 
 26 July 2016
 	still working on AGalaxy actor, finishing up on it though, may focus on AUniverse tomorrow.
-	may utilize multiple framebuffers
+	may utilize multiple framebuffers, handled by APlayer
+
+29 July 2016
+	wewlads
+	working on refactoring scene class to handle multiple framebuffers
+	ps, those shaders have inconsistent #versions lol
 	
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts

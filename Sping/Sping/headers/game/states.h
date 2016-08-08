@@ -14,8 +14,7 @@ enum class State //a lot are redundant for now, just showing
 	DEV,
 	DEV_WIREFRAME,
 
-
-	ENUM_SIZE
+	ENUM_COUNT
 };
 
 
@@ -23,8 +22,7 @@ enum class State //a lot are redundant for now, just showing
 class States
 {
 private:
-	//c style casting always makes me tingle on the inside hehe
-	std::array<bool, (size_t)State::ENUM_SIZE> _states;
+	std::array<bool, static_cast<int>(State::ENUM_COUNT)> _states;
 
 public:
 	States();
@@ -34,19 +32,19 @@ public:
 	
 	inline bool get(State state)
 	{
-		return this->_states.at((size_t)state);
+		return this->_states[static_cast<int>(state)];
 	}
 
 	inline void set(State state, bool value)
 	{
-		this->_states.at((size_t)state) = value;
-		std::cout << "State enum " << (int)state << " has been set to " << value << "!\n";
+		this->_states[static_cast<int>(state)] = value;
+		std::cout << "State enum " << static_cast<int>(state) << " has been set to " << value << "!\n";
 	}
 
 	inline void toggle(State state)
 	{
-		this->_states.at((size_t)state) = !this->_states.at((size_t)state);
-		std::cout << "State enum " << (int)state << " has been toggled to " << this->_states.at((size_t)state) << "!\n";
+		this->_states[static_cast<int>(state)] = !this->_states[static_cast<int>(state)];
+		std::cout << "State enum " << static_cast<int>(state) << " has been toggled to " << this->_states[static_cast<int>(state)] << "!\n";
 	}
 
 protected:

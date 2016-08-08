@@ -55,8 +55,6 @@ public:
 	Scene scene;
 	//TODO: temp test lol
 	Renderable testoRendo;
-	Renderable testoRendoTwo;
-	GalaxyGenerator galaxyGenerator;
 
 protected:
 	

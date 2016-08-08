@@ -15,5 +15,10 @@
         <maxTexWidth>2048</maxTexWidth>
         <maxTexHeight>2048</maxTexHeight>
         <maxLod>7</maxLod>
+        <universeMaxCount>1</universeMaxCount>
+        <universeCellSize>512.0f</universeCellSize>
+        <universeCellWidthCount>1024</universeCellWidthCount>
+        <galaxyMaxCount>1</galaxyMaxCount>
+        <galaxyCellWidthCount>1024</galaxyCellWidthCount>
     </GraphicsSettings>
 </root>

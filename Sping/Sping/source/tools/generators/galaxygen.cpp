@@ -186,7 +186,7 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	boost::random::normal_distribution<> swirlDistrib(5.0f, 1.0f);
 	double swirl = PI * swirlDistrib(module);
 
-	boost::random::normal_distribution<> swirlOffsetDistrib(swirl, 0.05f);
+	boost::random::normal_distribution<> swirlOffsetDistrib(swirl, 0.04f);
 
 	boost::random::uniform_int_distribution<> sizeDistrib(1000, 10000);
 	unsigned int size = sizeDistrib(module);
@@ -264,7 +264,7 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	for (auto &element : tempCenterStars)
 	{
 		this->scale(element, glm::vec3(centerScale * 4.0f, centerScale * 0.6f, centerScale));
-		this->swirl(element, upVec, swirlOffsetDistrib(module) * 5, module);
+		this->swirl(element, upVec, swirl * 5, module);
 		this->color(element, module, schemeCenter);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempCenterStars), std::end(tempCenterStars));
@@ -274,14 +274,14 @@ std::vector<Star> GalaxyGenerator::genSpiral(boost::mt19937 &module)
 	tempBackgroundStars = this->genIrregular(module);
 	for (auto &element : tempBackgroundStars)
 	{
-		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module), centerScale * 0.4f, centerScale));
+		this->scale(element, glm::vec3(centerScale, centerScale * 0.4f, centerScale * backgroundLengthDistrib(module)));
 		this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));
 	tempBackgroundStars = this->genIrregular(module);
 	for (auto &element : tempBackgroundStars)
 	{
-		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module) * 0.75f, centerScale * 0.3f, centerScale * backgroundLengthDistrib(module)));
+		this->scale(element, glm::vec3(centerScale * backgroundLengthDistrib(module) * 0.5f, centerScale * 0.3f, centerScale * backgroundLengthDistrib(module)));
 		this->swirl(element, upVec, swirlOffsetDistrib(module), module);
 	}
 	tempStars.insert(std::end(tempStars), std::begin(tempBackgroundStars), std::end(tempBackgroundStars));

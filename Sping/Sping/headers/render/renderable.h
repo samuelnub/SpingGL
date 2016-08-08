@@ -2,6 +2,8 @@
 #ifndef RENDER_RENDERABLE_H
 #define RENDER_RENDERABLE_H
 
+#include <boost/uuid/uuid.hpp>
+
 #include <vector>
 #include <map>
 #include <string>
@@ -23,18 +25,28 @@ enum class DrawType
 	LINES
 };
 
+enum class DrawPriority //TODO: this fbo stuff
+{
+	UNIVERSE, //draw little versions of galaxies
+	GALACTIC, //draw whole galaxies made of little star points
+	STELLAR, //draw star system sized, little spheres
+	PLANETARY, //draw ground scale stuff, nearby proximity
+	ENUM_COUNT
+};
+
 //note: do not inherit off of this, instead, compose with this
 //an instance of a renderable only contains necessary information such as transformation in world space, and pointers to meshes, textures and shaders held in the scene object. Instances of these renderables should exist only in the scene's Renderable map, with strings denotating each instance. tldr its like that "model" class from before, but with shared resources
 class Renderable
 {
 private:
-	uint64_t _ID;
+	boost::uuids::uuid _uuid;
 
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 	glm::mat4 _worldTrans;
 
-	DrawType _drawtype;
+	DrawType _drawType;
+	DrawPriority _drawPriority;
 
 	std::vector<std::string> _shaderNames;
 	std::map<std::string, std::vector<std::string>> _meshAndTexes;
@@ -47,11 +59,12 @@ public:
 	~Renderable();
 
 	//specify initial resources to use, your upper level "actors" which involve this class will set up this in their own constructor
-	int create(const int64_t id, const glm::mat4 spawnPos,
+	int create(const glm::mat4 spawnPos,
 		Game *game,
 		const std::vector<std::string> &shaderNames,
 		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
-		DrawType drawtype = DrawType::TRIANGLES);
+		DrawType drawType = DrawType::TRIANGLES,
+		DrawPriority drawPriority = DrawPriority::PLANETARY);
 
 	//called each frame, just updates pos
 	inline void update(const glm::mat4 newPos)
@@ -63,14 +76,10 @@ public:
 	int update(const glm::mat4 newPos,
 		const std::vector<std::string> &shaderNames,
 		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
-		DrawType drawtype = DrawType::TRIANGLES);
+		DrawType drawType = DrawType::TRIANGLES,
+		DrawPriority drawPriority = DrawPriority::PLANETARY);
 	
 	//inline functions cant be forward declared :(((
-	inline int64_t getID()
-	{
-		this->_ID;
-	}
-
 	inline glm::mat4 *getTrans() 
 	{
 		return &this->_worldTrans;
@@ -78,7 +87,12 @@ public:
 
 	inline DrawType getDrawType()
 	{
-		return this->_drawtype;
+		return this->_drawType;
+	}
+
+	inline DrawPriority getDrawPriority()
+	{
+		return this->_drawPriority;
 	}
 
 	inline std::vector<std::string> *getShaderNames()
@@ -117,7 +131,12 @@ public:
 		return &this->_meshAndTexesVecPtr;
 	}
 
-	//lists info about its own instance, meshes it uses etc
+	inline boost::uuids::uuid getUUID()
+	{
+		return this->_uuid;
+	}
+
+	//TODO: lists info about its own instance, meshes it uses etc
 	void info(); 
 
 protected:
