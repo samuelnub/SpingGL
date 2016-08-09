@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<settings>
+  <setting name="WindowWidth" value="1280" type="INT"/>
+  <setting name="WindowHeight" value="720" type="INT"/>
+  <setting name="WindowFullscreen" value="0" type="BOOL"/>
+  <setting name="OpenGLMajorVersion" value="4" type="INT"/>
+  <setting name="OpenGLMinorVersion" value="3" type="INT"/>
+  <setting name="WindowDepthBits" value="24" type="INT"/>
+  <setting name="WindowStencilBits" value="8" type="INT"/>
+  <setting name="WindowDoublebuffer" value="1" type="BOOL"/>
+  <setting name="WindowMultiSamples" value="8" type="INT"/>
+  
+  <setting name="ProgramName" value="Sping" type="STRING"/>
+
+  <setting name="ProgramMaxActors" value="1000000" type="INT"/>
+  <setting name="ProgramMaxTextureSize" value="2048" type="INT"/>
+  <setting name="ProgramMaxLOD" value="7" type="INT"/>
+
+  <setting name="GameGraphicalSize" value="16384" type="INT"/>
+  
+  <setting name="GameUniverseScale" value="1000000000000000.0" type="DOUBLE"/>
+  <setting name="GameUniverseOctreeCellSize" value="2048" type="INT"/>
+
+  <setting name="GameGalaxyScale" value="1000000000000.0" type="DOUBLE"/>
+  <setting name="GameGalaxyOctreeCellSize" value="2048" type="INT"/>
+
+  <setting name="GameSolarScale" value="1000000000.0" type="DOUBLE"/>
+  <setting name="GameSolarOctreeCellSize" value="1024" type="INT"/>
+
+  <setting name="GamePlayerNearClip" value="0.1f" type="FLOAT"/>
+  <setting name="GamePlayerFarClip" value="1000000.0f" type="FLOAT"/>
+  <setting name="GamePlayerFOV" value="75.0f" type="FLOAT"/>
+
+  <setting name="GamePlayerMouseSensitivity" value="0.01f" type="FLOAT"/>
+  <setting name="GamePlayerRollSensitivity" value="0.005f" type="FLOAT"/>
+
+  <!--Reference https://wiki.libsdl.org/SDLScancodeLookup if you want to tinker here-->
+
+  <setting name="GameKeyPauseToggle" value="41" type="INT"/>
+  <setting name="GameKeyMenuConfirm" value="40" type="INT"/>
+  <setting name="GameKeyMenuUp" value="82" type="INT"/>
+  <setting name="GameKeyMenuDown" value="81" type="INT"/>
+  <setting name="GameKeyMenuLeft" value="80" type="INT"/>
+  <setting name="GameKeyMenuRight" value="79" type="INT"/>
+
+  <setting name="GameKeyPlayerForward" value="26" type="INT"/>
+  <setting name="GameKeyPlayerBackward" value="22" type="INT"/>
+  <setting name="GameKeyPlayerStrafeLeft" value="4" type="INT"/>
+  <setting name="GameKeyPlayerStrafeRight" value="7" type="INT"/>
+  <setting name="GameKeyPlayerUpward" value="21" type="INT"/>
+  <setting name="GameKeyPlayerDownward" value="9" type="INT"/>
+  <setting name="GameKeyPlayerRollLeft" value="20" type="INT"/>
+  <setting name="GameKeyPlayerRollRight" value="8" type="INT"/>
+
+  <setting name="GameKeyPlayerSpeedUp" value="23" type="INT"/>
+  <setting name="GameKeyPlayerSpeedDown" value="10" type="INT"/>
+  <setting name="GameKeyPlayerSpeedReset" value="25" type="INT"/>
+
+  <setting name="GameKeyPlayerFOVUp" value="75" type="INT"/>
+  <setting name="GameKeyPlayerFOVDown" value="78" type="INT"/>
+  <setting name="GameKeyPlayerFOVReset" value="74" type="INT"/>
+
+  <!--Dev keys should need the modifier key to be pressed at the same time, and for dev mode to be toggled on in the first place too-->
+  <setting name="GameKeyModifier" value="224" type="INT"/>
+  <setting name="GameKeyDevToggle" value="7" type="INT"/>
+  <setting name="GameKeyDevTeleportOrigin" value="11" type="INT"/>
+  <setting name="GameKeyDevWireframeToggle" value="26" type="INT"/>
+  
+</settings>
