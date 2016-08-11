@@ -16,9 +16,9 @@ class Game;
 //the numbers are the "word size", on 32 bit, its 32 bits  per word, on 64 bits, its; you guessed it, 64 bits, or you can explicitly demand the bits you want, you monster
 struct Vec3Big
 {
-	ttmath::Big<TTMATH_BITS(64), TTMATH_BITS(128)> x;
-	ttmath::Big<TTMATH_BITS(64), TTMATH_BITS(128)> y;
-	ttmath::Big<TTMATH_BITS(64), TTMATH_BITS(128)> z;
+	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> x;
+	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> y;
+	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> z;
 
 	Vec3Big()
 	{
@@ -47,7 +47,7 @@ struct Vec3Big
 class Scales
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 	std::array<ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)>, static_cast<int>(DrawPriority::ENUM_COUNT)> _scaleFactors;
 

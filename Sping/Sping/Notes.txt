@@ -98,7 +98,17 @@
 	probably going to redo the galaxygen class, to make a small "prototype" version first, with a texture2d that can be used for afar, and with all the details like arm count, density, total star count etc... which the final larger one (that AGalaxy will use) will extrapolate from
 	actual positional data for stuff like galaxies (for querying) to be stored as doubles, but rendered (transform matrix) as the usual float
 	rework on octrees, maybe a separate class for managing them
+
+9 August 2016
+	refactored settings so that editing settings wont be total hell anymore
+	need to change all the guys calling the setting's getter func lol
+
+10 August 2016
+	scale class that sits in the scene class, to manage scale factors, pretty basic for now, mostly just inline functions
 	
+11 August 2016
+	scrap that "scales class", transform class as a "component" of renderables and the camera class (etc...) to handle proper storage of universal distances and scaling without you ever knowing the actual scale factor, still not done, and theres a few redundant variables (like the scale factor, couldve just gotten it from a single place)
+
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
 	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results
