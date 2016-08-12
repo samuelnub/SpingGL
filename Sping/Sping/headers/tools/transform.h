@@ -74,7 +74,7 @@ struct Vec3Acc
 			);
 	}
 
-	Vec3Acc operator+(const glm::dvec3 &dvec)
+	Vec3Acc operator+(const glm::tvec3<double, glm::precision::highp> &dvec)
 	{
 		return Vec3Acc(
 			(this->x + dvec.x),
@@ -139,7 +139,6 @@ private:
 	Game *_gamePtr;
 
 	Vec3Acc _posReal; // real position, pretty large presumably
-	Vec3Acc _scaleReal;
 
 	DrawPriority _drawPriority;
 	double _scaleFactor; //grab from settings
@@ -149,18 +148,20 @@ private:
 
 	//dont wanna update the real vecAcc everytime we translate, that'd be costly as heck
 	double _updateRealLength;
-	glm::dvec3 _posRealAccumulated;
+	glm::tvec3<double, glm::precision::highp> _posRealAccumulated;
 
 	//the 2 aspects which are affected by this scaling down. rotation isnt affected
-	glm::vec3 _posGraphical;
-	glm::vec3 _scaleGraphical;
+	glm::tvec3<double, glm::precision::highp> _posGraphical;
+	glm::tvec3<double, glm::precision::highp> _scaleGraphical;
 
-	glm::vec3 _leftVec;
-	glm::vec3 _upVec;
-	glm::vec3 _frontVec;
-	glm::quat _orientation;
+	glm::tvec3<double, glm::precision::highp> _leftVec;
+	glm::tvec3<double, glm::precision::highp> _upVec;
+	glm::tvec3<double, glm::precision::highp> _frontVec;
+	glm::tquat<double, glm::precision::highp> _orientation;
 
-	glm::mat4 _transMat; //final form, to be sent to glsl
+	bool _recalcMat;
+
+	glm::mat4 _transMat; //final form, to be sent to glsl. all those "storage variables" above store it as doubles, but translate down (albeit a bit lossily)to this float-based matrix so opengl can use it efficiently
 
 public:
 	Transform();
@@ -172,55 +173,59 @@ public:
 		DrawPriority drawPriority,
 		const Vec3Acc &posReal,
 		bool warpBack = false,
-		const Vec3Acc &scaleReal = Vec3Acc(1.0, 1.0, 1.0),
-		const glm::vec3 &leftVec = glm::vec3(-1.0f, 0.0f, 0.0f),
-		const glm::vec3 &upVec = glm::vec3(0.0f, 1.0f, 0.0f),
-		const glm::vec3 &frontVec = glm::vec3(0.0f, 0.0f, 1.0f),
+		const glm::tvec3<double, glm::precision::highp> &scaleReal = glm::tvec3<double, glm::precision::highp>(1.0, 1.0, 1.0),
+		const glm::tvec3<double, glm::precision::highp> &leftVec = glm::tvec3<double, glm::precision::highp>(-1.0f, 0.0f, 0.0f),
+		const glm::tvec3<double, glm::precision::highp> &upVec = glm::tvec3<double, glm::precision::highp>(0.0f, 1.0f, 0.0f),
+		const glm::tvec3<double, glm::precision::highp> &frontVec = glm::tvec3<double, glm::precision::highp>(0.0f, 0.0f, 1.0f),
 		const float &angle = 0.0f,
 		const glm::vec3 &axis = glm::vec3(1.0f, 0.0f, 0.0f)
 		);
 	
+	//in reality, you (the external source) should only be calling addPosReal() and addPosLocalReal() instead of setting or adding graphical values
 	//setting absolute will not cause the "accumulation vector" to pile up, only adders below
 	//won't be using this very often, most likely
 	void setPosReal(const Vec3Acc &posReal);
 	//won't be using this very often, most likely
-	void setPosGraphical(const glm::vec3 &posGraphical);
+	void setPosGraphical(const glm::tvec3<double, glm::precision::highp> &posGraphical);
 
+	void addPosReal(const glm::tvec3<double, glm::precision::highp> &posReal);
 	//won't be using this very often, most likely
-	void addPosReal(const Vec3Acc &posReal);
-	void addPosReal(const glm::vec3 &posReal);
+	void addPosGraphical(const glm::tvec3<double, glm::precision::highp> &posGraphical);
+	
+	void addPosLocalReal(const glm::tvec3<double, glm::precision::highp> &posReal);
 	//won't be using this very often, most likely
-	void addPosGraphical(const glm::vec3 &posGraphical);
+	void addPosLocalGraphical(const glm::tvec3<double, glm::precision::highp> &posGraphical);
 
+	void setScaleReal(const glm::tvec3<double, glm::precision::highp> &scaleReal);
 	//won't be using this very often, most likely
-	void addPosLocalReal(const Vec3Acc &posReal);
-	void addPosLocalReal(const glm::vec3 &posReal);
-	//won't be using this very often, most likely
-	void addPosLocalGraphical(const glm::vec3 &posGraphical);
+	void setScaleGraphical(const glm::tvec3<double, glm::precision::highp> &scaleGraphical);
 
-	//won't be using this very often, most likely
-	void setScaleReal(const Vec3Acc &scaleReal);
-	void setScaleReal(const glm::vec3 &scaleReal);
-	//won't be using this very often, most likely
-	void setScaleGraphical(const glm::vec3 &scaleGraphical);
-
-	void roll(float angle);
-	void pitch(float angle);
-	void yaw(float angle);
-	void rotate(float angle, const glm::vec3 &axis);
+	void roll(double angle);
+	void pitch(double angle);
+	void yaw(double angle);
+	void rotate(double angle, const glm::tvec3<double, glm::precision::highp> &axis);
 
 	void setDrawPriority(DrawPriority drawPriority);
 	void setWarpBack(bool warpBack);
 
 	//getters
-	Vec3Acc &getPosReal();
+	const Vec3Acc &getPosReal();
+	const glm::tvec3<double, glm::precision::highp> &getPosGraphical();
+	DrawPriority getDrawPriority();
+	bool isBeyondThreshold();
+	glm::tvec3<double, glm::precision::highp> getScaleReal();
+	const glm::tvec3<double, glm::precision::highp> &getScaleGraphical();
+	const glm::tquat<double, glm::precision::highp> &getOrientation();
+
+	const glm::mat4 &getMat();
 
 protected:
 	void setupThreshold();
 	void updateScale();
 	void checkAccumulation(bool forceReset = false); //update real position, as well as reset accumulated glmvec3
 	void checkThreshold();
-
+	void normalize();
+	void recalcMat();
 
 };
 
