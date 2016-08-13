@@ -4,7 +4,7 @@
 
 Game::Game()
 {
-	settings.setup();
+	settings.setup(this);
 	window.setup(this);
 	states.setup();
 	input.setup(this);
@@ -13,7 +13,6 @@ Game::Game()
 	meshes.setup();
 	shaders.setup();
 	textures.setup();
-	
 	uuidgen.setup();
 
 	actormanager.setup(this);
@@ -27,9 +26,13 @@ Game::Game()
 
 	glm::mat4 testMat;
 	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.0f, 0.0f));
-	testoRendo.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::PLANETARY);
+	testoRendo.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::SURFACE);
 
 	scene.stage(&testoRendo);
+
+	testoRendoHUGE.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::PLANETARY);
+
+	scene.stage(&testoRendoHUGE);
 
 	while (true)
 		this->loop();

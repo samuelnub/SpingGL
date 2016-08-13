@@ -25,8 +25,6 @@
 #include <render/scene.h>
 //TODO: get rid lol
 #include <render/renderable.h>
-#include <tools/camera.h>
-#include <tools/generators/galaxygen.h>
 
 class Game
 {
@@ -48,13 +46,13 @@ public:
 	Meshes meshes;
 	Shaders shaders;
 	Textures textures;
-
 	UUIDGenerator uuidgen;
 
 	ActorManager actormanager;
 	Scene scene;
 	//TODO: temp test lol
 	Renderable testoRendo;
+	Renderable testoRendoHUGE;
 
 protected:
 	
