@@ -9,8 +9,6 @@
 
 //includes for actor types
 #include <game/actors/player.h>
-#include <game/actors/universe.h>
-#include <game/actors/galaxy.h>
 
 //includes for generators that these actors utilize
 #include <tools/generators/galaxygen.h>
@@ -37,8 +35,7 @@ public:
 	//============Containers for AActors=============
 	//===============================================
 	APlayer player;
-	AUniverse universe;
-	std::vector<AGalaxy> galaxies;
+	
 	//the main thing that actor classes will store is a uniqueptr to an octree in most cases, other than that, they just have pointers to the data they need
 
 	//===============================================

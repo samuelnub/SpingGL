@@ -34,19 +34,23 @@ void ActorManager::update()
 
 void ActorManager::setupPlayer()
 {
-	this->player.spawn(this->_gamePtr, glm::vec3(0.0f, 0.0f, 0.0f));
+	this->player = APlayer(
+		this->_gamePtr,
+		Transform(
+			this->_gamePtr,
+			DrawPriority::UNIVERSE,
+			Vec3Acc(0.0, 0.0, 0.0),
+			false
+			)
+		);
 }
 
 void ActorManager::setupUniverse()
 {
-	//TODO: temp literal seed for the whole universe
-	this->universe.spawn(this->_gamePtr, 1969);
+	//TODO: actor manager n stuff
 }
 
 void ActorManager::setupGalaxies()
 {
-	//TODO: stop making the string names literal you big fat bambi
-	this->_gamePtr->shaders.compile("AGalaxy-Shader0", "res/shaders/testVert.glsl", "res/shaders/testFrag.glsl");
-
-	this->_gamePtr->textures.store("AGalaxy-StarColor0", "res/textures/starColor.bmp", "diffuse");
+	
 }
