@@ -212,6 +212,11 @@ bool Transform::isBeyondThreshold()
 	return this->_isBeyondThreshold;
 }
 
+bool Transform::warpsBack()
+{
+	return this->_posWarpBack;
+}
+
 glm::tvec3<double, glm::precision::highp> Transform::getScaleReal()
 {
 	return this->_scaleGraphical * (1.0 / this->_scaleFactor);
@@ -220,6 +225,21 @@ glm::tvec3<double, glm::precision::highp> Transform::getScaleReal()
 const glm::tvec3<double, glm::precision::highp>& Transform::getScaleGraphical()
 {
 	return this->_scaleGraphical;
+}
+
+const glm::tvec3<double, glm::precision::highp>& Transform::getLeftVec()
+{
+	return this->_leftVec;
+}
+
+const glm::tvec3<double, glm::precision::highp>& Transform::getUpVec()
+{
+	return this->_upVec;
+}
+
+const glm::tvec3<double, glm::precision::highp>& Transform::getFrontVec()
+{
+	return this->_frontVec;
 }
 
 const glm::tquat<double, glm::precision::highp>& Transform::getOrientation()
