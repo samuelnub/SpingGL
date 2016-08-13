@@ -109,11 +109,6 @@
 11 August 2016
 	scrap that "scales class", transform class as a "component" of renderables and the camera class (etc...) to handle proper storage of universal distances and scaling without you ever knowing the actual scale factor, still not done, and theres a few redundant variables (like the scale factor, couldve just gotten it from a single place)
 
-12 August 2016
-	camera class now simplified as "transform" aka view matrix manipulation, has been migrated to the separate Transform class, and contains a Transform instance for each DrawPriority, and it iterates through each one and transforms them appropriately
-	still need to fix player class so it properly controls it
-	try to move the enum class of "drawpriority" to transform.h, or else you'd probably end up with circular includes (if Transform ends up being a component of Renderable)
-
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
 	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results

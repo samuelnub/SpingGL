@@ -204,7 +204,7 @@ public:
 	void pitch(double angle);
 	void yaw(double angle);
 	void rotate(double angle, const glm::tvec3<double, glm::precision::highp> &axis);
-	//TODO: "lookAt(upVec, targetVec)" implementation
+
 	void setDrawPriority(DrawPriority drawPriority);
 	void setWarpBack(bool warpBack);
 
@@ -213,12 +213,8 @@ public:
 	const glm::tvec3<double, glm::precision::highp> &getPosGraphical();
 	DrawPriority getDrawPriority();
 	bool isBeyondThreshold();
-	bool warpsBack();
 	glm::tvec3<double, glm::precision::highp> getScaleReal();
 	const glm::tvec3<double, glm::precision::highp> &getScaleGraphical();
-	const glm::tvec3<double, glm::precision::highp> &getLeftVec();
-	const glm::tvec3<double, glm::precision::highp> &getUpVec();
-	const glm::tvec3<double, glm::precision::highp> &getFrontVec();
 	const glm::tquat<double, glm::precision::highp> &getOrientation();
 
 	const glm::mat4 &getMat();
