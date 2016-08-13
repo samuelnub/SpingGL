@@ -1,6 +1,5 @@
 #include <tools/transform.h>
 #include <game/game.h>
-#include <render/renderable.h>
 
 Transform::Transform()
 {

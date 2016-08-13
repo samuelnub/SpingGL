@@ -12,7 +12,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-enum class DrawPriority; //legal in c++11
+class Game;
+
+enum class DrawPriority
+{
+	UNIVERSE,
+	GALACTIC,
+	STELLAR,
+	PLANETARY,
+	SURFACE,
+	ENUM_COUNT
+};
 
 //accurate vec 3
 struct Vec3Acc
@@ -37,9 +47,9 @@ struct Vec3Acc
 
 	Vec3Acc(const std::string &x, const std::string &y, const std::string &z)
 	{
-		this->x = x.c_str;
-		this->y = y.c_str;
-		this->z = z.c_str;
+		this->x = x.c_str();
+		this->y = y.c_str();
+		this->z = z.c_str();
 	}
 
 	Vec3Acc(double x, double y, double z)
@@ -101,7 +111,7 @@ struct Vec3Acc
 			);
 	}
 
-	Vec3Acc operator*(const glm::vec3 &dvec)
+	Vec3Acc operator*(const glm::tvec3<double, glm::precision::highp> &dvec)
 	{
 		return Vec3Acc(
 			(this->x * dvec.x),
@@ -136,7 +146,7 @@ struct Vec3Acc
 class Transform
 {
 private:
-	Game *_gamePtr;
+	Game *_gamePtr = nullptr;
 
 	Vec3Acc _posReal; // real position, pretty large presumably
 

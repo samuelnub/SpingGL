@@ -12,6 +12,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
+#include <tools/transform.h>
+
 class Game;
 
 struct Mesh;
@@ -23,15 +25,6 @@ enum class DrawType
 	TRIANGLES,
 	POINTS,
 	LINES
-};
-
-enum class DrawPriority //TODO: this fbo stuff
-{
-	UNIVERSE, //draw little versions of galaxies
-	GALACTIC, //draw whole galaxies made of little star points
-	STELLAR, //draw star system sized, little spheres
-	PLANETARY, //draw ground scale stuff, nearby proximity
-	ENUM_COUNT
 };
 
 //note: do not inherit off of this, instead, compose with this
@@ -64,7 +57,7 @@ public:
 		const std::vector<std::string> &shaderNames,
 		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
 		DrawType drawType = DrawType::TRIANGLES,
-		DrawPriority drawPriority = DrawPriority::PLANETARY);
+		DrawPriority drawPriority = DrawPriority::SURFACE);
 
 	//called each frame, just updates pos
 	inline void update(const glm::mat4 newPos)
@@ -77,7 +70,7 @@ public:
 		const std::vector<std::string> &shaderNames,
 		const std::map<std::string, std::vector<std::string>> &meshAndTexes,
 		DrawType drawType = DrawType::TRIANGLES,
-		DrawPriority drawPriority = DrawPriority::PLANETARY);
+		DrawPriority drawPriority = DrawPriority::SURFACE);
 	
 	//inline functions cant be forward declared :(((
 	inline glm::mat4 *getTrans() 

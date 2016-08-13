@@ -114,6 +114,10 @@
 	still need to fix player class so it properly controls it
 	try to move the enum class of "drawpriority" to transform.h, or else you'd probably end up with circular includes (if Transform ends up being a component of Renderable)
 
+13 August 2016
+	should work on refactoring so that _components and actors_ are set up via the constructor instead of an easily forgettable "setup();"
+	>compiles after 3 days of blindwork - "wow thats a lot of errors" - oh, i just forgot to forward declare this class >recompile - oh, 90% of them are gone
+
 TODO:
 	work on displaying text, if youre smart enough and have the energy to make a good performing ttf font renderer, do it, or else just stick with bitmap fonts
 	note to self: procedural texture generation: make a dozen or so random textures at start, and apply a random combination of them and color them differently with the fragment shader to make pseudo unique results
