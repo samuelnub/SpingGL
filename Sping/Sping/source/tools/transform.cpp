@@ -206,6 +206,11 @@ DrawPriority Transform::getDrawPriority()
 	return this->_drawPriority;
 }
 
+double Transform::getScaleFactor()
+{
+	return this->_scaleFactor;
+}
+
 bool Transform::isBeyondThreshold()
 {
 	return this->_isBeyondThreshold;
@@ -293,6 +298,12 @@ void Transform::checkAccumulation(bool forceReset)
 	{
 		this->_posReal = this->_posReal + this->_posRealAccumulated;
 		this->_posRealAccumulated = glm::tvec3<double, glm::precision::highp>();
+
+		this->setPosGraphical(glm::vec3(
+			(this->_posReal.x * this->_scaleFactor).ToFloat(),
+			(this->_posReal.y * this->_scaleFactor).ToFloat(),
+			(this->_posReal.z * this->_scaleFactor).ToFloat()
+			));
 	}
 }
 

@@ -27,9 +27,9 @@ enum class DrawPriority
 //accurate vec 3
 struct Vec3Acc
 {
-	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> x;
-	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> y;
-	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> z;
+	ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> x;
+	ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> y;
+	ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> z;
 
 	Vec3Acc()
 	{
@@ -38,7 +38,7 @@ struct Vec3Acc
 		this->z = 0.0;
 	}
 
-	Vec3Acc(const ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> &x, const ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> &y, const ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> &z)
+	Vec3Acc(const ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> &x, const ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> &y, const ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> &z)
 	{
 		this->x = x;
 		this->y = y;
@@ -132,7 +132,7 @@ struct Vec3Acc
 			!(*this == vecAcc);
 	}
 
-	ttmath::Big<TTMATH_BITS(128), TTMATH_BITS(256)> length()
+	ttmath::Big<TTMATH_BITS(256), TTMATH_BITS(256)> length()
 	{
 		return ttmath::Sqrt(
 			(this->x * this->x) +
@@ -222,6 +222,7 @@ public:
 	const Vec3Acc &getPosReal();
 	const glm::tvec3<double, glm::precision::highp> &getPosGraphical();
 	DrawPriority getDrawPriority();
+	double getScaleFactor();
 	bool isBeyondThreshold();
 	bool warpsBack();
 	glm::tvec3<double, glm::precision::highp> getScaleReal();

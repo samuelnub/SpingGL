@@ -26,13 +26,18 @@ Game::Game()
 
 	glm::mat4 testMat;
 	testMat = glm::translate(testMat, glm::vec3(0.0f, 0.0f, 0.0f));
-	testoRendo.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::SURFACE);
 
-	scene.stage(&testoRendo);
+	testoRendoSurface.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::SURFACE);
+	testoRendoPlanetary.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::PLANETARY);
+	testoRendoStellar.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::STELLAR);
+	testoRendoGalactic.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::GALACTIC);
+	testoRendoUniverse.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::UNIVERSE);
 
-	testoRendoHUGE.create(testMat, this, _shadeTest, _templol, DrawType::TRIANGLES, DrawPriority::PLANETARY);
-
-	scene.stage(&testoRendoHUGE);
+	scene.stage(&testoRendoSurface);
+	scene.stage(&testoRendoPlanetary);
+	scene.stage(&testoRendoStellar);
+	scene.stage(&testoRendoGalactic);
+	scene.stage(&testoRendoUniverse);
 
 	while (true)
 		this->loop();
@@ -46,10 +51,10 @@ void Game::loop()
 {
 	input.update(SDL_GetTicks());
 
-	testoRendo.update(glm::rotate(*testoRendo.getTrans(), glm::radians(0.05f * this->input.getDelta()), glm::vec3(0.0f, -1.0f, 0.0f)));
+	testoRendoSurface.update(glm::rotate(*testoRendoSurface.getTrans(), glm::radians(0.05f * this->input.getDelta()), glm::vec3(0.0f, -1.0f, 0.0f)));
 
 	glm::mat4 testMat;
-	testMat = glm::rotate(*testoRendo.getTrans(), 0.000001f * (this->input.getDelta()/100.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	testMat = glm::rotate(*testoRendoSurface.getTrans(), 0.000001f * (this->input.getDelta()/100.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	actormanager.update();
 	scene.draw();

@@ -40,7 +40,7 @@ void ActorManager::setupPlayer()
 			this->_gamePtr,
 			DrawPriority::UNIVERSE,
 			Vec3Acc(0.0, 0.0, 0.0),
-			false
+			true
 			)
 		);
 }

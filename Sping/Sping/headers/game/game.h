@@ -51,8 +51,11 @@ public:
 	ActorManager actormanager;
 	Scene scene;
 	//TODO: temp test lol
-	Renderable testoRendo;
-	Renderable testoRendoHUGE;
+	Renderable testoRendoSurface;
+	Renderable testoRendoPlanetary;
+	Renderable testoRendoStellar;
+	Renderable testoRendoGalactic;
+	Renderable testoRendoUniverse;
 
 protected:
 	
